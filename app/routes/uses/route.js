@@ -1,1 +1,3 @@
-export { Uses as default, meta } from './uses';
+import { redirect } from '@remix-run/cloudflare';
+
+export const loader = () => redirect('/about');

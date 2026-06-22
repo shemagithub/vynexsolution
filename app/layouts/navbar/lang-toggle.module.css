@@ -1,0 +1,39 @@
+.toggle {
+  display: flex;
+  gap: 2px;
+  margin-left: var(--spaceM);
+}
+
+.button {
+  font-family: var(--fontStack);
+  font-size: var(--fontSizeBodyXS);
+  font-weight: var(--fontWeightMedium);
+  color: var(--textLight);
+  background: transparent;
+  border: 1px solid color-mix(in lab, var(--textLight) 30%, transparent);
+  padding: 2px 6px;
+  cursor: pointer;
+  transition: color var(--durationS), border-color var(--durationS),
+    background-color var(--durationS);
+
+  &[data-active] {
+    color: var(--primary);
+    border-color: var(--primary);
+    background-color: color-mix(in lab, var(--primary) 10%, transparent);
+  }
+
+  &:hover {
+    color: var(--textBody);
+    border-color: var(--textBody);
+  }
+}
+
+.toggle[data-mobile] {
+  margin-left: 0;
+  margin-top: var(--spaceL);
+}
+
+.toggle[data-mobile] .button {
+  font-size: var(--fontSizeBodyS);
+  padding: 4px 10px;
+}

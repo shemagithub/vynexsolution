@@ -1,0 +1,99 @@
+.project {
+  --maxWidthL: var(--maxWidthM);
+}
+
+.actions {
+  opacity: 0;
+  padding-top: 0;
+  padding-bottom: var(--space2XL);
+
+  &:global {
+    animation: fade-in 1s ease 0.5s forwards;
+  }
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+  gap: var(--spaceM);
+  flex-wrap: wrap;
+}
+
+.backLink {
+  font-size: var(--fontSizeBodyS);
+  color: var(--textLight);
+  text-decoration: none;
+  margin-left: var(--spaceS);
+
+  &:hover {
+    color: var(--primary);
+  }
+}
+
+.section {
+  opacity: 0;
+  padding-top: var(--space2XL);
+  padding-bottom: var(--space2XL);
+
+  &:global {
+    animation: fade-in 1s ease 1s forwards;
+  }
+
+  + & {
+    padding-top: 0;
+  }
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spaceS);
+}
+
+.tag {
+  font-family: var(--monoFontStack);
+  font-size: var(--fontSizeBodyS);
+  padding: var(--spaceXS) var(--spaceS);
+  border: 1px solid color-mix(in lab, var(--textLight) 20%, transparent);
+  color: var(--primary);
+}
+
+.previewCard {
+  position: relative;
+  margin-top: var(--spaceXL);
+  min-height: 280px;
+  border: 1px solid color-mix(in lab, var(--textLight) 15%, transparent);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: color-mix(in lab, var(--background) 90%, var(--primary));
+}
+
+.previewGrid {
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(color-mix(in lab, var(--textLight) 8%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in lab, var(--textLight) 8%, transparent) 1px, transparent 1px);
+  background-size: 32px 32px;
+  opacity: 0.5;
+}
+
+.previewContent {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: var(--space2XL);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spaceS);
+}
+
+.previewActions {
+  display: flex;
+  gap: var(--spaceM);
+  margin-top: var(--spaceM);
+  flex-wrap: wrap;
+  justify-content: center;
+}

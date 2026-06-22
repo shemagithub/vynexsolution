@@ -5,11 +5,11 @@ import { Footer } from '~/components/footer';
 import { Heading } from '~/components/heading';
 import { Icon } from '~/components/icon';
 import { Input } from '~/components/input';
-import { Link } from '~/components/link';
 import { Section } from '~/components/section';
 import { Text } from '~/components/text';
 import { tokens } from '~/components/theme-provider/theme';
 import { Transition } from '~/components/transition';
+import { budgetRanges, projectTypes } from '~/data/content';
 import { useFormInput } from '~/hooks';
 import { useRef } from 'react';
 import { cssProps, msToNum, numToMs } from '~/utils/style';
@@ -17,14 +17,13 @@ import { baseMeta } from '~/utils/meta';
 import { Form, useActionData, useNavigation } from '@remix-run/react';
 import { json } from '@remix-run/cloudflare';
 import { SESClient, SendEmailCommand } from '@aws-sdk/client-ses';
-import { socialLinks } from '~/layouts/navbar/nav-data';
 import config from '~/config.json';
-import styles from './contact.module.css';
+import styles from './quote.module.css';
 
 export const meta = () => {
   return baseMeta({
-    title: 'Contact',
-    description: `Get in touch with ${config.name} — email, WhatsApp, or send us a message.`,
+    title: 'Request a Quote',
+    description: 'Tell us about your project and get a custom quote from EMBEDIXe.',
   });
 };
 
@@ -44,19 +43,24 @@ export async function action({ context, request }) {
   const formData = await request.formData();
   const isBot = String(formData.get('name'));
   const email = String(formData.get('email'));
+  const projectType = String(formData.get('projectType'));
+  const budget = String(formData.get('budget'));
+  const deadline = String(formData.get('deadline'));
   const message = String(formData.get('message'));
   const errors = {};
 
-  // Return without sending if a bot trips the honeypot
   if (isBot) return json({ success: true });
 
-  // Handle input validation on the server
   if (!email || !EMAIL_PATTERN.test(email)) {
     errors.email = 'Please enter a valid email address.';
   }
 
+  if (!projectType) {
+    errors.projectType = 'Please select a project type.';
+  }
+
   if (!message) {
-    errors.message = 'Please enter a message.';
+    errors.message = 'Please describe your project.';
   }
 
   if (email.length > MAX_EMAIL_LENGTH) {
@@ -64,14 +68,22 @@ export async function action({ context, request }) {
   }
 
   if (message.length > MAX_MESSAGE_LENGTH) {
-    errors.message = `Message must be shorter than ${MAX_MESSAGE_LENGTH} characters.`;
+    errors.message = `Description must be shorter than ${MAX_MESSAGE_LENGTH} characters.`;
   }
 
   if (Object.keys(errors).length > 0) {
     return json({ errors });
   }
 
-  // Send email via Amazon SES
+  const body = [
+    `From: ${email}`,
+    `Project Type: ${projectType}`,
+    `Budget: ${budget || 'Not specified'}`,
+    `Deadline: ${deadline || 'Not specified'}`,
+    '',
+    message,
+  ].join('\n');
+
   await ses.send(
     new SendEmailCommand({
       Destination: {
@@ -79,12 +91,10 @@ export async function action({ context, request }) {
       },
       Message: {
         Body: {
-          Text: {
-            Data: `From: ${email}\n\n${message}`,
-          },
+          Text: { Data: body },
         },
         Subject: {
-          Data: `Portfolio message from ${email}`,
+          Data: `Quote request from ${email} — ${projectType}`,
         },
       },
       Source: `EMBEDIXe <${context.cloudflare.env.FROM_EMAIL}>`,
@@ -95,9 +105,10 @@ export async function action({ context, request }) {
   return json({ success: true });
 }
 
-export const Contact = () => {
+export const Quote = () => {
   const errorRef = useRef();
   const email = useFormInput('');
+  const deadline = useFormInput('');
   const message = useFormInput('');
   const initDelay = tokens.base.durationS;
   const actionData = useActionData();
@@ -105,58 +116,29 @@ export const Contact = () => {
   const sending = state === 'submitting';
 
   return (
-    <Section className={styles.contact}>
-      <div className={styles.wrapper}>
-        <aside className={styles.info}>
-          <Text size="l" as="p">
-            <Link href={`mailto:${config.email}`}>{config.email}</Link>
-          </Text>
-          <Text size="s" as="p">
-            {config.location}
-          </Text>
-          <Button
-            secondary
-            className={styles.whatsapp}
-            href={`https://wa.me/${config.whatsapp.replace(/\D/g, '')}`}
-            icon="send"
+    <Section className={styles.quote}>
+      <Transition unmount in={!actionData?.success} timeout={1600}>
+        {({ status, nodeRef }) => (
+          <Form
+            unstable_viewTransition
+            className={styles.form}
+            method="post"
+            ref={nodeRef}
           >
-            WhatsApp
-          </Button>
-          <div className={styles.social}>
-            {socialLinks.map(({ label, url }) => (
-              <Link key={label} href={url}>
-                {label}
-              </Link>
-            ))}
-          </div>
-          <Text size="s" as="p" className={styles.quoteLink}>
-            Need a detailed estimate?{' '}
-            <Link href="/quote">Request a quote</Link>
-          </Text>
-        </aside>
-        <Transition unmount in={!actionData?.success} timeout={1600}>
-          {({ status, nodeRef }) => (
-            <Form
-              unstable_viewTransition
-              className={styles.form}
-              method="post"
-              ref={nodeRef}
+            <Heading
+              className={styles.title}
+              data-status={status}
+              level={3}
+              as="h1"
+              style={getDelay(tokens.base.durationXS, initDelay, 0.3)}
             >
-              <Heading
-                className={styles.title}
-                data-status={status}
-                level={3}
-                as="h1"
-                style={getDelay(tokens.base.durationXS, initDelay, 0.3)}
-              >
-                <DecoderText text="Contact us" start={status !== 'exited'} delay={300} />
-              </Heading>
+              <DecoderText text="Request a quote" start={status !== 'exited'} delay={300} />
+            </Heading>
             <Divider
               className={styles.divider}
               data-status={status}
               style={getDelay(tokens.base.durationXS, initDelay, 0.4)}
             />
-            {/* Hidden honeypot field to identify bots */}
             <Input
               className={styles.botkiller}
               label="Name"
@@ -175,6 +157,58 @@ export const Contact = () => {
               maxLength={MAX_EMAIL_LENGTH}
               {...email}
             />
+            <div
+              className={styles.selectWrapper}
+              data-status={status}
+              style={getDelay(tokens.base.durationXS, initDelay, 0.5)}
+            >
+              <label className={styles.selectLabel} htmlFor="projectType">
+                Project type
+              </label>
+              <select
+                id="projectType"
+                name="projectType"
+                className={styles.select}
+                required
+                defaultValue=""
+              >
+                <option value="" disabled>
+                  Select a project type
+                </option>
+                {projectTypes.map(type => (
+                  <option key={type} value={type}>
+                    {type}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div
+              className={styles.selectWrapper}
+              data-status={status}
+              style={getDelay(tokens.base.durationS, initDelay, 0.3)}
+            >
+              <label className={styles.selectLabel} htmlFor="budget">
+                Budget range
+              </label>
+              <select id="budget" name="budget" className={styles.select} defaultValue="">
+                <option value="">Select a budget range</option>
+                {budgetRanges.map(range => (
+                  <option key={range} value={range}>
+                    {range}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <Input
+              className={styles.input}
+              data-status={status}
+              style={getDelay(tokens.base.durationS, initDelay, 0.5)}
+              autoComplete="off"
+              label="Deadline (optional)"
+              name="deadline"
+              maxLength={128}
+              {...deadline}
+            />
             <Input
               required
               multiline
@@ -182,7 +216,7 @@ export const Contact = () => {
               data-status={status}
               style={getDelay(tokens.base.durationS, initDelay)}
               autoComplete="off"
-              label="Message"
+              label="Project description"
               name="message"
               maxLength={MAX_MESSAGE_LENGTH}
               {...message}
@@ -192,10 +226,10 @@ export const Contact = () => {
               in={!sending && actionData?.errors}
               timeout={msToNum(tokens.base.durationM)}
             >
-              {({ status: errorStatus, nodeRef }) => (
+              {({ status: errorStatus, nodeRef: errNodeRef }) => (
                 <div
                   className={styles.formError}
-                  ref={nodeRef}
+                  ref={errNodeRef}
                   data-status={errorStatus}
                   style={cssProps({
                     height: errorStatus ? errorRef.current?.offsetHeight : 0,
@@ -205,6 +239,7 @@ export const Contact = () => {
                     <div className={styles.formErrorMessage}>
                       <Icon className={styles.formErrorIcon} icon="error" />
                       {actionData?.errors?.email}
+                      {actionData?.errors?.projectType}
                       {actionData?.errors?.message}
                     </div>
                   </div>
@@ -222,22 +257,16 @@ export const Contact = () => {
               icon="send"
               type="submit"
             >
-              Send message
+              Submit request
             </Button>
           </Form>
         )}
       </Transition>
-      </div>
       <Transition unmount in={actionData?.success}>
         {({ status, nodeRef }) => (
           <div className={styles.complete} aria-live="polite" ref={nodeRef}>
-            <Heading
-              level={3}
-              as="h3"
-              className={styles.completeTitle}
-              data-status={status}
-            >
-              Message Sent
+            <Heading level={3} as="h3" className={styles.completeTitle} data-status={status}>
+              Request Sent
             </Heading>
             <Text
               size="l"
@@ -246,7 +275,7 @@ export const Contact = () => {
               data-status={status}
               style={getDelay(tokens.base.durationXS)}
             >
-              We will get back to you within 48 hours.
+              We will review your project and get back to you within 48 hours.
             </Text>
             <Button
               secondary

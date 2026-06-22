@@ -1,0 +1,28 @@
+.button {
+  position: fixed;
+  bottom: var(--spaceL);
+  right: var(--spaceL);
+  z-index: var(--zIndex4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background-color: #25d366;
+  color: white;
+  box-shadow: 0 4px 12px color-mix(in lab, #25d366 40%, transparent);
+  transition: transform var(--durationS) ease, box-shadow var(--durationS) ease;
+
+  &:hover {
+    transform: scale(1.08);
+    box-shadow: 0 6px 20px color-mix(in lab, #25d366 50%, transparent);
+  }
+
+  @media (--mediaMobile) {
+    bottom: var(--spaceM);
+    right: var(--spaceM);
+    width: 50px;
+    height: 50px;
+  }
+}

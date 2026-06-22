@@ -18,6 +18,8 @@ import { Error } from '~/layouts/error';
 import { VisuallyHidden } from '~/components/visually-hidden';
 import { Navbar } from '~/layouts/navbar';
 import { Progress } from '~/components/progress';
+import { LanguageProvider } from '~/components/language-provider/language-provider';
+import { WhatsAppButton } from '~/components/whatsapp-button/whatsapp-button';
 import config from '~/config.json';
 import styles from './root.module.css';
 import './reset.module.css';
@@ -118,19 +120,22 @@ export default function App() {
       </head>
       <body data-theme={theme}>
         <ThemeProvider theme={theme} toggleTheme={toggleTheme}>
-          <Progress />
-          <VisuallyHidden showOnFocus as="a" className={styles.skip} href="#main-content">
-            Skip to main content
-          </VisuallyHidden>
-          <Navbar />
-          <main
-            id="main-content"
-            className={styles.container}
-            tabIndex={-1}
-            data-loading={state === 'loading'}
-          >
-            <Outlet />
-          </main>
+          <LanguageProvider>
+            <Progress />
+            <VisuallyHidden showOnFocus as="a" className={styles.skip} href="#main-content">
+              Skip to main content
+            </VisuallyHidden>
+            <Navbar />
+            <main
+              id="main-content"
+              className={styles.container}
+              tabIndex={-1}
+              data-loading={state === 'loading'}
+            >
+              <Outlet />
+            </main>
+            <WhatsAppButton />
+          </LanguageProvider>
         </ThemeProvider>
         <ScrollRestoration />
         <Scripts />

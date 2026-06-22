@@ -1,0 +1,37 @@
+.cta {
+  width: 100vw;
+  padding: var(--space5XL) var(--spaceOuter);
+  display: flex;
+  justify-content: center;
+  margin-bottom: var(--space2XL);
+}
+
+.content {
+  max-width: var(--maxWidthM);
+  width: 100%;
+  text-align: center;
+  opacity: 0;
+  transition: opacity var(--durationXL) ease var(--durationM);
+
+  &[data-visible='true'] {
+    opacity: 1;
+  }
+}
+
+.title {
+  margin-bottom: var(--spaceL);
+}
+
+.description {
+  margin-bottom: var(--space2XL);
+  max-width: 480px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.buttons {
+  display: flex;
+  gap: var(--spaceM);
+  justify-content: center;
+  flex-wrap: wrap;
+}

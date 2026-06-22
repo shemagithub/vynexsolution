@@ -8,6 +8,7 @@ import { Section } from '~/components/section';
 import { Text } from '~/components/text';
 import { useReducedMotion } from 'framer-motion';
 import { useWindowSize } from '~/hooks';
+import { useLanguage } from '~/components/language-provider/language-provider';
 import { Link as RouterLink, useLoaderData } from '@remix-run/react';
 import { useState, useEffect } from 'react';
 import { formatDate } from '~/utils/date';
@@ -18,6 +19,7 @@ function ArticlesPost({ slug, frontmatter, timecode, index }) {
   const [hovered, setHovered] = useState(false);
   const [dateTime, setDateTime] = useState(null);
   const reduceMotion = useReducedMotion();
+  const { t } = useLanguage();
   const { title, abstract, date, featured, banner } = frontmatter;
 
   useEffect(() => {
@@ -76,7 +78,7 @@ function ArticlesPost({ slug, frontmatter, timecode, index }) {
           </Text>
           <div className={styles.postFooter}>
             <Button secondary iconHoverShift icon="chevron-right" as="div">
-              Read article
+              {t.blog.readMore}
             </Button>
             <Text className={styles.timecode} size="s">
               {timecode}
@@ -136,13 +138,14 @@ function SkeletonPost({ index }) {
 export function Articles() {
   const { posts, featured } = useLoaderData();
   const { width } = useWindowSize();
+  const { t } = useLanguage();
   const singleColumnWidth = 1190;
   const isSingleColumn = width <= singleColumnWidth;
 
   const postsHeader = (
     <header className={styles.header}>
       <Heading className={styles.heading} level={5} as="h1">
-        <DecoderText text="Latest articles" />
+        <DecoderText text={t.blog.heading} />
       </Heading>
       <Barcode className={styles.barcode} />
     </header>

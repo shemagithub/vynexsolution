@@ -15,11 +15,13 @@ import { baseMeta } from '~/utils/meta';
 import { Intro } from './intro';
 import { Profile } from './profile';
 import { ProjectSummary } from './project-summary';
+import { ServicesSection } from './services-section';
+import { Testimonials } from './testimonials';
+import { CtaSection } from './cta-section';
 import { useEffect, useRef, useState } from 'react';
 import config from '~/config.json';
 import styles from './home.module.css';
 
-// Prefetch draco decoader wasm
 export const links = () => {
   return [
     {
@@ -41,8 +43,8 @@ export const links = () => {
 
 export const meta = () => {
   return baseMeta({
-    title: 'Designer + Developer',
-    description: `Design portfolio of ${config.name} — a product designer working on web & mobile apps with a focus on motion, experience design, and accessibility.`,
+    title: 'Web, Mobile, IoT & Smart Systems',
+    description: `${config.name} — a tech agency in Kigali, Rwanda building web apps, mobile applications, IoT systems, and digital solutions.`,
   });
 };
 
@@ -50,13 +52,25 @@ export const Home = () => {
   const [visibleSections, setVisibleSections] = useState([]);
   const [scrollIndicatorHidden, setScrollIndicatorHidden] = useState(false);
   const intro = useRef();
+  const services = useRef();
   const projectOne = useRef();
   const projectTwo = useRef();
   const projectThree = useRef();
+  const testimonials = useRef();
   const details = useRef();
+  const cta = useRef();
 
   useEffect(() => {
-    const sections = [intro, projectOne, projectTwo, projectThree, details];
+    const sections = [
+      intro,
+      services,
+      projectOne,
+      projectTwo,
+      projectThree,
+      testimonials,
+      details,
+      cta,
+    ];
 
     const sectionObserver = new IntersectionObserver(
       (entries, observer) => {
@@ -98,18 +112,23 @@ export const Home = () => {
         sectionRef={intro}
         scrollIndicatorHidden={scrollIndicatorHidden}
       />
+      <ServicesSection
+        id="services"
+        sectionRef={services}
+        visible={visibleSections.includes(services.current)}
+      />
       <ProjectSummary
         id="project-1"
         sectionRef={projectOne}
         visible={visibleSections.includes(projectOne.current)}
         index={1}
-        title="Designing the future of education"
-        description="Designing a platform to help educators build better online courseware"
+        title="Smartlink Rwanda"
+        description="Corporate technology website — services, portfolio, and modern brand presence"
         buttonText="View project"
-        buttonLink="/projects/smart-sparrow"
+        buttonLink="/projects/smartlink"
         model={{
           type: 'laptop',
-          alt: 'Smart Sparrow lesson builder',
+          alt: 'Smartlink Rwanda website',
           textures: [
             {
               srcSet: `${sprTexture} 1280w, ${sprTextureLarge} 2560w`,
@@ -124,21 +143,17 @@ export const Home = () => {
         sectionRef={projectTwo}
         visible={visibleSections.includes(projectTwo.current)}
         index={2}
-        title="Video game progress tracking"
-        description="Design and development for a video game tracking app built in React Native"
-        buttonText="View website"
-        buttonLink="https://gamestack.hamishw.com"
+        title="Finverra"
+        description="Fintech platform website with product pages and professional brand experience"
+        buttonText="View project"
+        buttonLink="/projects/finverra"
         model={{
-          type: 'phone',
-          alt: 'App login screen',
+          type: 'laptop',
+          alt: 'Finverra fintech website',
           textures: [
             {
-              srcSet: `${gamestackTexture} 375w, ${gamestackTextureLarge} 750w`,
-              placeholder: gamestackTexturePlaceholder,
-            },
-            {
-              srcSet: `${gamestackTexture2} 375w, ${gamestackTexture2Large} 750w`,
-              placeholder: gamestackTexture2Placeholder,
+              srcSet: `${sliceTexture} 800w, ${sliceTextureLarge} 1920w`,
+              placeholder: sliceTexturePlaceholder,
             },
           ],
         }}
@@ -148,25 +163,35 @@ export const Home = () => {
         sectionRef={projectThree}
         visible={visibleSections.includes(projectThree.current)}
         index={3}
-        title="Biomedical image collaboration"
-        description="Increasing the amount of collaboration in Slice, an app for biomedical imaging"
+        title="Shingiro — Finverra"
+        description="Product microsite with feature highlights and conversion-focused layout"
         buttonText="View project"
-        buttonLink="/projects/slice"
+        buttonLink="/projects/shingiro"
         model={{
           type: 'laptop',
-          alt: 'Annotating a biomedical image in the Slice app',
+          alt: 'Shingiro Finverra product page',
           textures: [
             {
-              srcSet: `${sliceTexture} 800w, ${sliceTextureLarge} 1920w`,
-              placeholder: sliceTexturePlaceholder,
+              srcSet: `${gamestackTexture} 375w, ${gamestackTextureLarge} 750w`,
+              placeholder: gamestackTexturePlaceholder,
             },
           ],
         }}
+      />
+      <Testimonials
+        id="testimonials"
+        sectionRef={testimonials}
+        visible={visibleSections.includes(testimonials.current)}
       />
       <Profile
         sectionRef={details}
         visible={visibleSections.includes(details.current)}
         id="details"
+      />
+      <CtaSection
+        id="cta"
+        sectionRef={cta}
+        visible={visibleSections.includes(cta.current)}
       />
       <Footer />
     </div>

@@ -9,6 +9,8 @@ import { useEffect, useRef, useState } from 'react';
 import { cssProps, media, msToNum, numToMs } from '~/utils/style';
 import { NavToggle } from './nav-toggle';
 import { ThemeToggle } from './theme-toggle';
+import { LangToggle } from './lang-toggle';
+import { useLanguage } from '~/components/language-provider/language-provider';
 import { navLinks, socialLinks } from './nav-data';
 import config from '~/config.json';
 import styles from './navbar.module.css';
@@ -18,6 +20,7 @@ export const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [target, setTarget] = useState();
   const { theme } = useTheme();
+  const { t } = useLanguage();
   const location = useLocation();
   const windowSize = useWindowSize();
   const headerRef = useRef();
@@ -155,7 +158,7 @@ export const Navbar = () => {
       <NavToggle onClick={() => setMenuOpen(!menuOpen)} menuOpen={menuOpen} />
       <nav className={styles.nav}>
         <div className={styles.navList}>
-          {navLinks.map(({ label, pathname }) => (
+          {navLinks.map(({ label, pathname, key }) => (
             <RouterLink
               unstable_viewTransition
               prefetch="intent"
@@ -166,16 +169,17 @@ export const Navbar = () => {
               aria-current={getCurrent(pathname)}
               onClick={handleNavItemClick}
             >
-              {label}
+              {t.nav[key] || label}
             </RouterLink>
           ))}
         </div>
         <NavbarIcons desktop />
+        <LangToggle />
       </nav>
       <Transition unmount in={menuOpen} timeout={msToNum(tokens.base.durationL)}>
         {({ visible, nodeRef }) => (
           <nav className={styles.mobileNav} data-visible={visible} ref={nodeRef}>
-            {navLinks.map(({ label, pathname }, index) => (
+            {navLinks.map(({ label, pathname, key }, index) => (
               <RouterLink
                 unstable_viewTransition
                 prefetch="intent"
@@ -191,10 +195,11 @@ export const Navbar = () => {
                   ),
                 })}
               >
-                {label}
+                {t.nav[key] || label}
               </RouterLink>
             ))}
             <NavbarIcons />
+            <LangToggle isMobile />
             <ThemeToggle isMobile />
           </nav>
         )}

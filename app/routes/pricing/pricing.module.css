@@ -1,0 +1,48 @@
+.pricing {
+  min-height: 100vh;
+}
+
+.header {
+  padding: var(--space5XL) var(--spaceOuter) var(--space2XL);
+  max-width: var(--maxWidthL);
+  margin: 0 auto;
+  text-align: center;
+}
+
+.subtitle {
+  margin-top: var(--spaceM);
+  max-width: 560px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spaceL);
+  padding: 0 var(--spaceOuter) var(--space5XL);
+  max-width: var(--maxWidthL);
+  margin: 0 auto;
+
+  @media (--mediaMobile) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.card {
+  padding: var(--space2XL);
+  border: 1px solid color-mix(in lab, var(--textLight) 15%, transparent);
+  display: flex;
+  flex-direction: column;
+}
+
+.price {
+  color: var(--primary);
+  font-weight: var(--fontWeightMedium);
+  margin: var(--spaceM) 0;
+}
+
+.features {
+  flex: 1;
+  margin: var(--spaceL) 0;
+}
