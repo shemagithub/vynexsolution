@@ -1,1 +1,1 @@
-export { Portfolio as default, meta } from './portfolio';
+export { Portfolio as default, meta, clientLoader } from './portfolio';

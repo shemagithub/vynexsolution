@@ -1,20 +1,27 @@
 import { useId } from 'react';
 import { Button } from '~/components/button';
 import { useTheme } from '~/components/theme-provider';
+import { classes } from '~/utils/style';
 import styles from './theme-toggle.module.css';
 
-export const ThemeToggle = ({ isMobile, ...rest }) => {
+export const ThemeToggle = ({ className, onClick, ...rest }) => {
   const id = useId();
   const { toggleTheme } = useTheme();
   const maskId = `${id}theme-toggle-mask`;
 
+  function handleClick(event) {
+    event.stopPropagation();
+    onClick?.(event);
+    toggleTheme();
+  }
+
   return (
     <Button
       iconOnly
-      className={styles.toggle}
-      data-mobile={isMobile}
+      type="button"
+      className={classes(styles.toggle, className)}
       aria-label="Toggle theme"
-      onClick={() => toggleTheme()}
+      onClick={handleClick}
       {...rest}
     >
       <svg aria-hidden className={styles.svg} width="38" height="38" viewBox="0 0 38 38">

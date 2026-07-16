@@ -1,5 +1,7 @@
 .testimonials {
-  width: 100vw;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: clip;
   min-height: 80vh;
   padding: var(--space5XL) var(--spaceOuter);
   display: flex;

@@ -7,6 +7,10 @@
     &[data-loading='true'] {
       opacity: 0;
     }
+
+    &[data-admin='true'] {
+      min-height: 100vh;
+    }
   }
 
   .skip {

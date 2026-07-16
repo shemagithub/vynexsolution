@@ -24,7 +24,7 @@
   max-width: var(--maxWidthL);
   margin: 0 auto;
 
-  @media (--mediaMobile) {
+  @media (--mediaTablet) {
     grid-template-columns: 1fr;
   }
 }
@@ -34,6 +34,10 @@
   border: 1px solid color-mix(in lab, var(--textLight) 15%, transparent);
   display: flex;
   flex-direction: column;
+
+  @media (--mediaMobileS) {
+    padding: var(--spaceL);
+  }
 }
 
 .price {

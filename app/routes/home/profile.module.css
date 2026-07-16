@@ -1,5 +1,7 @@
 .profile {
-  width: 100vw;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: clip;
   min-height: 100vh;
   margin-top: 60px;
   margin-bottom: 40px;
@@ -61,6 +63,10 @@
   margin-bottom: var(--spaceL);
   opacity: 0;
   transition: opacity var(--durationXL) ease var(--durationM);
+
+  @media (--mediaMobile) {
+    white-space: normal;
+  }
 
   &[data-visible='true'] {
     opacity: 1;

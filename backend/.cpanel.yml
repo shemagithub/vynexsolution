@@ -1,0 +1,9 @@
+---
+# cPanel Git Version Control deployment tasks.
+# Adjust DEPLOYPATH if your app root differs.
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/$USER/backend
+    - cd $DEPLOYPATH
+    - npm install --production
+    - mkdir -p uploads

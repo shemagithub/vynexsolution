@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EMBEDIXe Admin</title>
+  <link rel="stylesheet" href="/admin/styles.css">
+</head>
+<body>
+  <div id="app">
+    <div id="login-screen" class="login-screen">
+      <form id="login-form" class="login-card">
+        <h1>EMBEDIXe Admin</h1>
+        <p>Sign in to manage your website content</p>
+        <label>Email<input type="email" name="email" required autocomplete="username"></label>
+        <label>Password<input type="password" name="password" required autocomplete="current-password"></label>
+        <button type="submit">Sign in</button>
+        <p id="login-error" class="error hidden"></p>
+      </form>
+    </div>
+
+    <div id="dashboard" class="dashboard hidden">
+      <aside class="sidebar">
+        <div class="brand">EMBEDIXe</div>
+        <nav>
+          <button data-view="overview" class="nav-btn active">Dashboard</button>
+          <button data-view="projects" class="nav-btn">Projects</button>
+          <button data-view="services" class="nav-btn">Services</button>
+          <button data-view="testimonials" class="nav-btn">Testimonials</button>
+          <button data-view="pricing" class="nav-btn">Pricing</button>
+          <button data-view="articles" class="nav-btn">Articles</button>
+          <button data-view="contacts" class="nav-btn">Contact Messages</button>
+          <button data-view="quotes" class="nav-btn">Quote Requests</button>
+          <button data-view="mail" class="nav-btn">Mail</button>
+          <button data-view="settings" class="nav-btn">Site Settings</button>
+        </nav>
+        <button id="logout-btn" class="logout-btn">Sign out</button>
+      </aside>
+
+      <main class="main">
+        <header class="topbar">
+          <h2 id="page-title">Dashboard</h2>
+          <span id="user-name"></span>
+        </header>
+        <div id="content" class="content"></div>
+      </main>
+    </div>
+  </div>
+
+  <dialog id="modal">
+    <form id="modal-form" method="dialog">
+      <div id="modal-body"></div>
+      <div class="modal-actions">
+        <button type="button" id="modal-cancel">Cancel</button>
+        <button type="submit" id="modal-save">Save</button>
+      </div>
+    </form>
+  </dialog>
+
+<script src="/admin/app.js" type="module"></script>
+</body>
+</html>

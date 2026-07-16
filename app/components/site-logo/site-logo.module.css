@@ -1,0 +1,50 @@
+@layer components {
+  .wrapper {
+    display: inline-flex;
+    align-items: center;
+    position: relative;
+    min-height: 52px;
+  }
+
+  .logo {
+    display: block;
+    height: 52px;
+    width: auto;
+    max-width: 220px;
+    object-fit: contain;
+    object-position: left center;
+  }
+
+  @media (--mediaTablet) {
+    .wrapper {
+      min-height: 40px;
+    }
+
+    .logo {
+      height: 40px;
+      max-width: 180px;
+    }
+  }
+
+  @media (--mediaMobile), (--mediaMobileLandscape) {
+    .wrapper {
+      min-height: 28px;
+    }
+
+    .logo {
+      height: 28px;
+      max-width: 120px;
+    }
+  }
+
+  @media (--mediaMobileS) {
+    .wrapper {
+      min-height: 24px;
+    }
+
+    .logo {
+      height: 24px;
+      max-width: 96px;
+    }
+  }
+}

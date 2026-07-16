@@ -9,12 +9,17 @@ import {
   SegmentedControlOption,
 } from '~/components/segmented-control';
 import { Text } from '~/components/text';
-import { projects, filterCategories } from '~/data/content';
 import { baseMeta } from '~/utils/meta';
 import config from '~/config.json';
-import { Link as RouterLink } from '@remix-run/react';
+import { Link as RouterLink, useLoaderData } from '@remix-run/react';
+import { json } from '@remix-run/cloudflare';
+import { loadPortfolioPageData, refreshFromApi } from '~/utils/page-loaders';
 import { useState } from 'react';
 import styles from './portfolio.module.css';
+
+export async function clientLoader() {
+  return loadPortfolioPageData();
+}
 
 export const meta = () => {
   return baseMeta({
@@ -24,6 +29,7 @@ export const meta = () => {
 };
 
 export const Portfolio = () => {
+  const { projects, filterCategories } = useLoaderData();
   const [filterIndex, setFilterIndex] = useState(0);
   const activeFilter = filterCategories[filterIndex].value;
 

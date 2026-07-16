@@ -4,11 +4,10 @@ import { Heading } from '~/components/heading';
 import { Section } from '~/components/section';
 import { Text } from '~/components/text';
 import { Transition } from '~/components/transition';
-import { homeServices } from '~/data/content';
 import { useState } from 'react';
 import styles from './services-section.module.css';
 
-export function ServicesSection({ id, sectionRef, visible }) {
+export function ServicesSection({ id, sectionRef, visible, homeServices = [] }) {
   const [focused, setFocused] = useState(false);
   const titleId = `${id}-title`;
 

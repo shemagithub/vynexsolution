@@ -45,6 +45,24 @@
       background-color: var(--primary);
     }
 
+    &[type='date'] {
+      color-scheme: light dark;
+      min-height: 48px;
+      font-size: max(16px, var(--inputFontSize));
+    }
+
+    &[type='date']::-webkit-calendar-picker-indicator {
+      cursor: pointer;
+      opacity: 0.7;
+      touch-action: manipulation;
+    }
+
+    @media (--mediaMobile) {
+      font-size: max(16px, var(--inputFontSize));
+      padding: var(--spaceM) 0 var(--spaceS);
+      min-height: 48px;
+    }
+
     @media (--mediaReduceMotion) {
       #root & {
         transition: background-color 5000s linear 0s;
@@ -79,6 +97,12 @@
     cursor: text;
     transform-origin: top left;
     transition: color var(--durationM) ease;
+    max-width: 100%;
+    pointer-events: none;
+
+    @media (--mediaMobile) {
+      top: var(--spaceM);
+    }
 
     @media (--mediaUseMotion) {
       transition: transform var(--durationM) var(--bezierFastoutSlowin),
@@ -89,6 +113,10 @@
     &[data-focused='true'] {
       color: color-mix(in lab, var(--text) 54%, transparent);
       transform: scale(0.8) translateY(calc(var(--spaceL) * -1));
+
+      @media (--mediaMobile) {
+        transform: scale(0.8) translateY(calc(var(--spaceM) * -1));
+      }
     }
   }
 

@@ -9,9 +9,10 @@ import { Link as RouterLink } from '@remix-run/react';
 import { useInterval, usePrevious, useScrollToHash } from '~/hooks';
 import { Suspense, lazy, useEffect, useState } from 'react';
 import { cssProps } from '~/utils/style';
-import config from '~/config.json';
-import { useHydrated } from '~/hooks/useHydrated';
+import { useSiteConfig } from '~/components/site-config-provider';
 import styles from './intro.module.css';
+
+const SPHERE_QUERY = '(min-width: 1041px) and (prefers-reduced-motion: no-preference)';
 
 const DisplacementSphere = lazy(() =>
   import('./displacement-sphere').then(module => ({ default: module.DisplacementSphere }))
@@ -19,7 +20,8 @@ const DisplacementSphere = lazy(() =>
 
 export function Intro({ id, sectionRef, scrollIndicatorHidden, ...rest }) {
   const { theme } = useTheme();
-  const { disciplines } = config;
+  const siteConfig = useSiteConfig();
+  const { name, role, disciplines } = siteConfig;
   const [disciplineIndex, setDisciplineIndex] = useState(0);
   const prevTheme = usePrevious(theme);
   const introLabel = [disciplines.slice(0, -1).join(', '), disciplines.slice(-1)[0]].join(
@@ -28,7 +30,15 @@ export function Intro({ id, sectionRef, scrollIndicatorHidden, ...rest }) {
   const currentDiscipline = disciplines.find((item, index) => index === disciplineIndex);
   const titleId = `${id}-title`;
   const scrollToHash = useScrollToHash();
-  const isHydrated = useHydrated();
+  const [showSphere, setShowSphere] = useState(false);
+
+  useEffect(() => {
+    const media = window.matchMedia(SPHERE_QUERY);
+    const update = () => setShowSphere(media.matches);
+    update();
+    media.addEventListener('change', update);
+    return () => media.removeEventListener('change', update);
+  }, []);
 
   useInterval(
     () => {
@@ -63,18 +73,18 @@ export function Intro({ id, sectionRef, scrollIndicatorHidden, ...rest }) {
       <Transition in key={theme} timeout={3000}>
         {({ visible, status }) => (
           <>
-            {isHydrated && (
+            {showSphere && (
               <Suspense>
                 <DisplacementSphere />
               </Suspense>
             )}
             <header className={styles.text}>
               <h1 className={styles.name} data-visible={visible} id={titleId}>
-                <DecoderText text={config.name} delay={500} />
+                <DecoderText text={name} delay={500} />
               </h1>
               <Heading level={0} as="h2" className={styles.title}>
                 <VisuallyHidden className={styles.label}>
-                  {`${config.role} + ${introLabel}`}
+                  {`${role} + ${introLabel}`}
                 </VisuallyHidden>
                 <span aria-hidden className={styles.row}>
                   <span
@@ -82,7 +92,7 @@ export function Intro({ id, sectionRef, scrollIndicatorHidden, ...rest }) {
                     data-status={status}
                     style={cssProps({ delay: tokens.base.durationXS })}
                   >
-                    {config.role}
+                    {role}
                   </span>
                   <span className={styles.line} data-status={status} />
                 </span>

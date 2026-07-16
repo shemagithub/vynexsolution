@@ -9,16 +9,21 @@ import { Section } from '~/components/section';
 import { Text } from '~/components/text';
 import { tokens } from '~/components/theme-provider/theme';
 import { Transition } from '~/components/transition';
-import { budgetRanges, projectTypes } from '~/data/content';
 import { useFormInput } from '~/hooks';
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { cssProps, msToNum, numToMs } from '~/utils/style';
 import { baseMeta } from '~/utils/meta';
-import { Form, useActionData, useNavigation } from '@remix-run/react';
+import { Form, useActionData, useLoaderData, useNavigation } from '@remix-run/react';
 import { json } from '@remix-run/cloudflare';
-import { SESClient, SendEmailCommand } from '@aws-sdk/client-ses';
-import config from '~/config.json';
+import { postToApi } from '~/utils/api';
+import { loadQuotePageData } from '~/utils/page-loaders';
 import styles from './quote.module.css';
+
+export async function clientLoader() {
+  return loadQuotePageData();
+}
+
+clientLoader.hydrate = true;
 
 export const meta = () => {
   return baseMeta({
@@ -31,15 +36,17 @@ const MAX_EMAIL_LENGTH = 512;
 const MAX_MESSAGE_LENGTH = 4096;
 const EMAIL_PATTERN = /(.+)@(.+){2,}\.(.+){2,}/;
 
-export async function action({ context, request }) {
-  const ses = new SESClient({
-    region: 'us-east-1',
-    credentials: {
-      accessKeyId: context.cloudflare.env.AWS_ACCESS_KEY_ID,
-      secretAccessKey: context.cloudflare.env.AWS_SECRET_ACCESS_KEY,
-    },
-  });
+function todayDateString() {
+  return new Date().toISOString().slice(0, 10);
+}
 
+function isValidDeadline(value) {
+  if (!value) return true;
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
+  return value >= todayDateString();
+}
+
+export async function clientAction({ request }) {
   const formData = await request.formData();
   const isBot = String(formData.get('name'));
   const email = String(formData.get('email'));
@@ -71,41 +78,30 @@ export async function action({ context, request }) {
     errors.message = `Description must be shorter than ${MAX_MESSAGE_LENGTH} characters.`;
   }
 
+  if (deadline && !isValidDeadline(deadline)) {
+    errors.deadline = 'Please pick a valid date (today or later).';
+  }
+
   if (Object.keys(errors).length > 0) {
     return json({ errors });
   }
 
-  const body = [
-    `From: ${email}`,
-    `Project Type: ${projectType}`,
-    `Budget: ${budget || 'Not specified'}`,
-    `Deadline: ${deadline || 'Not specified'}`,
-    '',
-    message,
-  ].join('\n');
-
-  await ses.send(
-    new SendEmailCommand({
-      Destination: {
-        ToAddresses: [context.cloudflare.env.EMAIL],
+  try {
+    await postToApi('/quote', { email, projectType, budget, deadline, message });
+  } catch (err) {
+    console.error('Failed to submit quote:', err);
+    return json({
+      errors: {
+        message: 'Something went wrong. Please try again or email us directly.',
       },
-      Message: {
-        Body: {
-          Text: { Data: body },
-        },
-        Subject: {
-          Data: `Quote request from ${email} — ${projectType}`,
-        },
-      },
-      Source: `EMBEDIXe <${context.cloudflare.env.FROM_EMAIL}>`,
-      ReplyToAddresses: [email],
-    })
-  );
+    });
+  }
 
   return json({ success: true });
 }
 
 export const Quote = () => {
+  const { projectTypes = [], budgetRanges = [] } = useLoaderData() || {};
   const errorRef = useRef();
   const email = useFormInput('');
   const deadline = useFormInput('');
@@ -114,6 +110,11 @@ export const Quote = () => {
   const actionData = useActionData();
   const { state } = useNavigation();
   const sending = state === 'submitting';
+  const [minDate, setMinDate] = useState('');
+
+  useEffect(() => {
+    setMinDate(todayDateString());
+  }, []);
 
   return (
     <Section className={styles.quote}>
@@ -144,6 +145,8 @@ export const Quote = () => {
               label="Name"
               name="name"
               maxLength={MAX_EMAIL_LENGTH}
+              tabIndex={-1}
+              autoComplete="off"
             />
             <Input
               required
@@ -206,7 +209,8 @@ export const Quote = () => {
               autoComplete="off"
               label="Deadline (optional)"
               name="deadline"
-              maxLength={128}
+              type="date"
+              min={minDate || undefined}
               {...deadline}
             />
             <Input
@@ -240,6 +244,7 @@ export const Quote = () => {
                       <Icon className={styles.formErrorIcon} icon="error" />
                       {actionData?.errors?.email}
                       {actionData?.errors?.projectType}
+                      {actionData?.errors?.deadline}
                       {actionData?.errors?.message}
                     </div>
                   </div>
@@ -275,7 +280,8 @@ export const Quote = () => {
               data-status={status}
               style={getDelay(tokens.base.durationXS)}
             >
-              We will review your project and get back to you within 48 hours.
+              Thank you for your request. A confirmation email has been sent to you, and we will
+              get back to you within 48 hours.
             </Text>
             <Button
               secondary

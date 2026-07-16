@@ -1,14 +1,22 @@
 import { Button } from '~/components/button';
 import { Icon } from '~/components/icon';
+import { classes } from '~/utils/style';
 import styles from './nav-toggle.module.css';
 
-export const NavToggle = ({ menuOpen, ...rest }) => {
+export const NavToggle = ({ menuOpen, onClick, className, ...rest }) => {
+  function handleClick(event) {
+    event.stopPropagation();
+    onClick?.(event);
+  }
+
   return (
     <Button
       iconOnly
-      className={styles.toggle}
+      type="button"
+      className={classes(styles.toggle, className)}
       aria-label="Menu"
       aria-expanded={menuOpen}
+      onClick={handleClick}
       {...rest}
     >
       <div className={styles.inner}>

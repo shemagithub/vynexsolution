@@ -1,16 +1,11 @@
-# Rename this file from .dev.vars.example to .dev.vars and paste in your credentials
+# Frontend site URL (used for canonical links and Open Graph)
+SITE_URL=https://embedixe.korasmart.com
 
-ENVIRONMENT=development
+# Backend API (default — used in dev and production)
+API_URL=https://test.guzekustomz.com
 
-# The email address to send emails to
-EMAIL=you@website.com
+# Local backend only (uncomment if running backend on localhost:4000)
+# API_URL=http://localhost:4000
 
-# The email address to send emails from (this needs to be set up in the AWS SES dashboard)
-FROM_EMAIL=portfolio-site@website.com
-
-# Credentials from your AWS account
-AWS_ACCESS_KEY_ID=PASTE_YOUR_ACCESS_KEY
-AWS_SECRET_ACCESS_KEY=PASTE_YOUR_SECRET_KEY
-
-# This is a random string used for the session cookie for saving the preferred theme
+# Session cookie secret for theme preference
 SESSION_SECRET=KEEP_IT_SECRET_KEEP_IT_SAFE

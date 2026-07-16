@@ -71,6 +71,11 @@
 .heading {
   white-space: nowrap;
   overflow: hidden;
+
+  @media (--mediaMobile) {
+    white-space: normal;
+    overflow: visible;
+  }
 }
 
 .list {
@@ -259,6 +264,10 @@
       padding-top: 50%;
     }
 
+    @media (--mediaMobile) {
+      padding-top: min(40vw, 220px);
+    }
+
     &::after {
       content: '';
       position: absolute;
@@ -285,6 +294,11 @@
   color: var(--primary);
   justify-self: stretch;
   margin-bottom: var(--spaceS);
+
+  @media (--mediaMobile) {
+    grid-template-columns: 64px 1fr;
+    gap: var(--spaceS);
+  }
 }
 
 .postImage {
@@ -387,3 +401,9 @@
     animation: fade-in 0.8s var(--bezierFastoutSlowin) forwards 0.4s;
   }
 }
+
+.empty {
+  margin-top: var(--spaceXL);
+  color: var(--textLight);
+}
+

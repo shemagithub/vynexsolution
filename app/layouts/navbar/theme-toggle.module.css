@@ -8,21 +8,23 @@
     top: var(--inset);
     right: var(--inset);
     transform: translate3d(0, 0, 0);
+  }
 
-    @media (--mediaMobile), (--mediaMobileLS) {
-      &:not([data-mobile='true']) {
-        display: none;
-      }
+  .mobileThemeToggle {
+    display: none;
+    position: relative;
+    top: auto;
+    right: auto;
+    transform: none;
+
+    @media (--mediaMobile), (--mediaMobileLandscape) {
+      display: flex;
     }
+  }
 
-    &[data-mobile='true'] {
-      --offset: var(--spaceXS);
-      --inset: calc(var(--spaceXL) - var(--offset));
-
-      top: unset;
-      bottom: var(--inset);
-      margin-top: 0;
-      margin-right: 0;
+  .desktopThemeToggle {
+    @media (--mediaMobile), (--mediaMobileLandscape) {
+      display: none !important;
     }
   }
 

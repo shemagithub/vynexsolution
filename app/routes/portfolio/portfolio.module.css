@@ -28,7 +28,7 @@
   grid-template-columns: repeat(2, 1fr);
   gap: var(--spaceL);
 
-  @media (--mediaMobile) {
+  @media (--mediaTablet) {
     grid-template-columns: 1fr;
   }
 }

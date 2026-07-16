@@ -1,12 +1,20 @@
 .services {
-  width: 100vw;
+  width: 100%;
+  max-width: 100%;
   min-height: 100vh;
   padding: var(--space5XL) var(--spaceOuter);
   display: flex;
   justify-content: center;
+  overflow-x: clip;
 
   @media (--mediaMobile) {
-    padding-top: var(--space4XL);
+    padding-top: var(--space3XL);
+    padding-bottom: var(--space3XL);
+    min-height: auto;
+  }
+
+  @media (--mediaMobileS) {
+    padding-top: var(--space2XL);
   }
 }
 
@@ -17,6 +25,10 @@
 
 .header {
   margin-bottom: var(--space3XL);
+
+  @media (--mediaMobile) {
+    margin-bottom: var(--space2XL);
+  }
 }
 
 .title {
@@ -45,7 +57,7 @@
   grid-template-columns: repeat(2, 1fr);
   gap: var(--spaceL);
 
-  @media (--mediaMobile) {
+  @media (--mediaTablet) {
     grid-template-columns: 1fr;
   }
 }
@@ -58,6 +70,10 @@
 
   &[data-visible='true'] {
     opacity: 1;
+  }
+
+  @media (--mediaMobileS) {
+    padding: var(--spaceL);
   }
 
   h3 {

@@ -3,6 +3,10 @@ node_modules
 /.cache
 /build
 .env
+backend/.env
+
+backend/uploads/*
+!backend/uploads/.gitkeep
 
 .wrangler
 .dev.vars

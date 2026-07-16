@@ -3,11 +3,33 @@
 @custom-media --mediaTablet (max-width: 1040px);
 @custom-media --mediaMobile (max-width: 696px);
 @custom-media --mediaMobileLS (max-height: 696px);
+@custom-media --mediaMobileLandscape (max-width: 1040px) and (max-height: 696px);
 @custom-media --mediaMobileS (max-width: 400px);
 @custom-media --mediaUseMotion (prefers-reduced-motion: no-preference);
 @custom-media --mediaReduceMotion (prefers-reduced-motion: reduce);
 @custom-media --mediaTouch (pointer: coarse);
 @custom-media --mediaNoTouch (pointer: fine);
+
+/* Unlayered so these override theme token durations on small screens */
+@media (--mediaMobile) {
+  :global(:root) {
+    --durationXS: 120ms;
+    --durationS: 160ms;
+    --durationM: 220ms;
+    --durationL: 320ms;
+    --durationXL: 420ms;
+  }
+}
+
+@media (--mediaReduceMotion) {
+  :global(:root) {
+    --durationXS: 1ms;
+    --durationS: 1ms;
+    --durationM: 1ms;
+    --durationL: 1ms;
+    --durationXL: 1ms;
+  }
+}
 
 @layer base {
   :global(:root) {
@@ -21,12 +43,25 @@
     transition: var(--durationM) ease;
     transition-property: background, opacity;
     color: var(--textBody);
-    width: 100vw;
+    width: 100%;
+    max-width: 100%;
     overflow-x: hidden;
     opacity: 1;
+    -webkit-tap-highlight-color: transparent;
+    text-rendering: optimizeLegibility;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
 
     &:focus {
       outline: none;
+    }
+  }
+
+  @media (--mediaMobile) {
+    :global(button),
+    :global(a),
+    :global([role='button']) {
+      touch-action: manipulation;
     }
   }
 

@@ -1,1 +1,1 @@
-export { ProjectDetail as default, meta, loader } from './project-detail';
+export { ProjectDetail as default, meta, clientLoader } from './project-detail';

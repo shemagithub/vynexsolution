@@ -1,3 +1,8 @@
 .home {
   overflow-x: hidden;
+
+  & > :global(section) {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 720px;
+  }
 }

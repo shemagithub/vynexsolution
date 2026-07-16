@@ -5,10 +5,16 @@ import { Heading } from '~/components/heading';
 import { List, ListItem } from '~/components/list';
 import { Section } from '~/components/section';
 import { Text } from '~/components/text';
-import { pricingPackages } from '~/data/content';
 import { baseMeta } from '~/utils/meta';
 import config from '~/config.json';
+import { json } from '@remix-run/cloudflare';
+import { useLoaderData } from '@remix-run/react';
+import { loadPricingPageData, refreshFromApi } from '~/utils/page-loaders';
 import styles from './pricing.module.css';
+
+export async function clientLoader() {
+  return loadPricingPageData();
+}
 
 export const meta = () => {
   return baseMeta({
@@ -18,6 +24,7 @@ export const meta = () => {
 };
 
 export const Pricing = () => {
+  const { pricingPackages } = useLoaderData();
   return (
     <article className={styles.pricing}>
       <Section className={styles.header}>

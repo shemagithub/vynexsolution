@@ -1,11 +1,12 @@
-import config from '~/config.json';
+import { useSiteConfig } from '~/components/site-config-provider';
+import { getWhatsAppUrl } from '~/utils/whatsapp';
 import styles from './whatsapp-button.module.css';
 
 export function WhatsAppButton() {
-  const message = encodeURIComponent(
-    'Hello EMBEDIXe! I would like to discuss a project with you.'
-  );
-  const url = `https://wa.me/${config.whatsapp.replace(/\D/g, '')}?text=${message}`;
+  const { name, whatsapp, phone } = useSiteConfig();
+  const url = getWhatsAppUrl({ name, whatsapp, phone });
+
+  if (!url) return null;
 
   return (
     <a

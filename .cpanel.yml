@@ -1,0 +1,10 @@
+---
+# cPanel Git deployment for the frontend (embedixe.korasmart.com)
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/koraowzo/embedixe.korasmart.com
+    - cd $DEPLOYPATH
+    - npm install
+    - npm run build
+    - /bin/cp -f deploy/cpanel-frontend.htaccess build/client/.htaccess
+    - /bin/cp -r build/client/* ./public_html/ 2>/dev/null || /bin/cp -r build/client/* ./

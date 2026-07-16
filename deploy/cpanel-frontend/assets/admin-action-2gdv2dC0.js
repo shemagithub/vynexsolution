@@ -1,0 +1,1 @@
+async function e(t){try{return await t()??{success:!0}}catch(s){return{success:!1,error:(s==null?void 0:s.message)||"Request failed. Please try again.",status:(s==null?void 0:s.status)||500}}}export{e as r};

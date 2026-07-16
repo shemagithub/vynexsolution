@@ -1,0 +1,1 @@
+import{r as s,a as r,j as t}from"./components-Y4Kc-98A.js";import{R as e}from"./browser-DhLkggWV.js";import"./router-DD0KmG-x.js";var a,o=s;o.createRoot,a=o.hydrateRoot;r.startTransition(()=>{a(document,t.jsx(r.StrictMode,{children:t.jsx(e,{})}))});

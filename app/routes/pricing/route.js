@@ -1,1 +1,1 @@
-export { Pricing as default, meta } from './pricing';
+export { Pricing as default, meta, clientLoader } from './pricing';

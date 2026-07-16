@@ -15,4 +15,50 @@
   + & {
     margin-top: 0;
   }
+
+  @media (--mediaMobile) {
+    padding-top: var(--spaceL);
+    padding-bottom: var(--spaceL);
+    margin-top: var(--spaceL);
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--spaceL);
+  width: 100%;
+
+  @media (--mediaTablet) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.card {
+  padding: var(--spaceXL);
+  border: 1px solid color-mix(in lab, var(--textLight) 15%, transparent);
+  background: color-mix(in lab, var(--background) 70%, transparent);
+  min-width: 0;
+
+  @media (--mediaMobileS) {
+    padding: var(--spaceL);
+  }
+}
+
+.icon {
+  display: inline-block;
+  font-family: var(--monoFontStack);
+  font-size: var(--fontSizeBodyS);
+  color: var(--primary);
+  font-weight: var(--fontWeightMedium);
+  margin-bottom: var(--spaceS);
+}
+
+.cardTitle {
+  margin: 0 0 var(--spaceS);
+}
+
+.cardText {
+  margin: 0;
+  white-space: pre-line;
 }

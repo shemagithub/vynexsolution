@@ -1,30 +1,29 @@
 import { Icon } from '~/components/icon';
-import { Monogram } from '~/components/monogram';
+import { SiteLogo } from '~/components/site-logo';
 import { useTheme } from '~/components/theme-provider';
 import { tokens } from '~/components/theme-provider/theme';
 import { Transition } from '~/components/transition';
-import { useScrollToHash, useWindowSize } from '~/hooks';
+import { useScrollToHash } from '~/hooks';
 import { Link as RouterLink, useLocation } from '@remix-run/react';
 import { useEffect, useRef, useState } from 'react';
-import { cssProps, media, msToNum, numToMs } from '~/utils/style';
+import { cssProps, msToNum, numToMs } from '~/utils/style';
 import { NavToggle } from './nav-toggle';
 import { ThemeToggle } from './theme-toggle';
+import themeToggleStyles from './theme-toggle.module.css';
 import { LangToggle } from './lang-toggle';
 import { useLanguage } from '~/components/language-provider/language-provider';
-import { navLinks, socialLinks } from './nav-data';
+import { navLinks, getSocialLinks } from './nav-data';
 import config from '~/config.json';
 import styles from './navbar.module.css';
 
-export const Navbar = () => {
+export const Navbar = ({ siteConfig = config }) => {
   const [current, setCurrent] = useState();
   const [menuOpen, setMenuOpen] = useState(false);
   const [target, setTarget] = useState();
   const { theme } = useTheme();
   const { t } = useLanguage();
   const location = useLocation();
-  const windowSize = useWindowSize();
   const headerRef = useRef();
-  const isMobile = windowSize.width <= media.mobile || windowSize.height <= 696;
   const scrollToHash = useScrollToHash();
 
   useEffect(() => {
@@ -113,7 +112,7 @@ export const Navbar = () => {
       document.removeEventListener('scroll', handleInversion);
       resetNavTheme();
     };
-  }, [theme, windowSize, location.key]);
+  }, [theme, location.key]);
 
   // Check if a nav item should be active
   const getCurrent = (url = '') => {
@@ -142,6 +141,27 @@ export const Navbar = () => {
     if (menuOpen) setMenuOpen(false);
   };
 
+  const handleMenuToggle = event => {
+    event.stopPropagation();
+    setMenuOpen(open => !open);
+  };
+
+  useEffect(() => {
+    if (!menuOpen) {
+      document.body.style.removeProperty('overflow');
+      return undefined;
+    }
+
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.removeProperty('overflow');
+    };
+  }, [menuOpen]);
+
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [location.pathname, location.hash]);
+
   return (
     <header className={styles.navbar} ref={headerRef}>
       <RouterLink
@@ -150,12 +170,26 @@ export const Navbar = () => {
         to={location.pathname === '/' ? '/#intro' : '/'}
         data-navbar-item
         className={styles.logo}
-        aria-label={`${config.name}, ${config.role}`}
+        aria-label={`${siteConfig.name || config.name}, ${siteConfig.role || config.role}`}
         onClick={handleMobileNavClick}
       >
-        <Monogram highlight />
+        <SiteLogo
+          highlight
+          logoLight={siteConfig.logoLight}
+          logoDark={siteConfig.logoDark}
+        />
+        <span className={styles.brandName}>{siteConfig.name || config.name}</span>
       </RouterLink>
-      <NavToggle onClick={() => setMenuOpen(!menuOpen)} menuOpen={menuOpen} />
+      <div className={styles.mobileHeaderActions}>
+        <ThemeToggle
+          className={`${themeToggleStyles.mobileThemeToggle} ${styles.mobileAction}`}
+        />
+        <NavToggle
+          className={styles.mobileAction}
+          menuOpen={menuOpen}
+          onClick={handleMenuToggle}
+        />
+      </div>
       <nav className={styles.nav}>
         <div className={styles.navList}>
           {navLinks.map(({ label, pathname, key }) => (
@@ -173,7 +207,7 @@ export const Navbar = () => {
             </RouterLink>
           ))}
         </div>
-        <NavbarIcons desktop />
+        <NavbarIcons desktop siteConfig={siteConfig} />
         <LangToggle />
       </nav>
       <Transition unmount in={menuOpen} timeout={msToNum(tokens.base.durationL)}>
@@ -198,20 +232,22 @@ export const Navbar = () => {
                 {t.nav[key] || label}
               </RouterLink>
             ))}
-            <NavbarIcons />
+            <NavbarIcons siteConfig={siteConfig} />
             <LangToggle isMobile />
-            <ThemeToggle isMobile />
           </nav>
         )}
       </Transition>
-      {!isMobile && <ThemeToggle data-navbar-item />}
+      <ThemeToggle className={themeToggleStyles.desktopThemeToggle} data-navbar-item />
     </header>
   );
 };
 
-const NavbarIcons = ({ desktop }) => (
+const NavbarIcons = ({ desktop, siteConfig = config }) => {
+  const links = getSocialLinks(siteConfig);
+
+  return (
   <div className={styles.navIcons}>
-    {socialLinks.map(({ label, url, icon }) => (
+    {links.map(({ label, url, icon }) => (
       <a
         key={label}
         data-navbar-item={desktop || undefined}
@@ -225,4 +261,5 @@ const NavbarIcons = ({ desktop }) => (
       </a>
     ))}
   </div>
-);
+  );
+};

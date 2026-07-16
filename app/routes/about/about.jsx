@@ -14,19 +14,26 @@ import {
   ProjectSectionText,
   ProjectTextRow,
 } from '~/layouts/project';
-import { team, technologies, values } from '~/data/content';
 import { baseMeta } from '~/utils/meta';
-import config from '~/config.json';
+import { json } from '@remix-run/cloudflare';
+import { useLoaderData } from '@remix-run/react';
+import { loadAboutPageData, refreshFromApi } from '~/utils/page-loaders';
 import styles from './about.module.css';
 
-export const meta = () => {
-  return baseMeta({
-    title: 'About Us',
-    description: `Learn about ${config.name} — our mission, team, values, and the technologies we use to build smart systems.`,
-  });
+export async function clientLoader() {
+  return loadAboutPageData();
+}
+
+export const meta = ({ data }) => {
+  const title = data?.page?.headerTitle || 'About Us';
+  const description =
+    data?.page?.headerDescription ||
+    'Learn about our mission, team, values, and the technologies we use to build smart systems.';
+  return baseMeta({ title, description });
 };
 
 export const About = () => {
+  const { page, team, technologies, values, siteConfig } = useLoaderData();
   return (
     <>
       <ProjectContainer className={styles.about}>
@@ -35,22 +42,13 @@ export const About = () => {
           placeholder={usesBackgroundPlaceholder}
           opacity={0.7}
         />
-        <ProjectHeader
-          title="About EMBEDIXe"
-          description="We exist to help businesses in Rwanda and beyond leverage technology — from web and mobile apps to IoT and smart automation systems."
-        />
+        <ProjectHeader title={page.headerTitle} description={page.headerDescription} />
         <ProjectSection padding="none" className={styles.section}>
           <ProjectSectionContent>
             <ProjectTextRow width="m">
               <ProjectSectionHeading>Our Story</ProjectSectionHeading>
               <ProjectSectionText as="div">
-                <p>
-                  EMBEDIXe was founded with a simple belief: every business deserves access
-                  to world-class technology. Based in Kigali, Rwanda, we started as a
-                  small team passionate about embedded systems and software development.
-                  Today, we deliver complete digital solutions — from responsive websites
-                  to IoT-powered smart systems.
-                </p>
+                <p>{page.story}</p>
               </ProjectSectionText>
             </ProjectTextRow>
           </ProjectSectionContent>
@@ -62,12 +60,10 @@ export const About = () => {
               <ProjectSectionText as="div">
                 <List>
                   <ListItem>
-                    <strong>Mission:</strong> Empower businesses with innovative, reliable
-                    technology solutions that drive growth and efficiency.
+                    <strong>Mission:</strong> {page.mission}
                   </ListItem>
                   <ListItem>
-                    <strong>Vision:</strong> Become East Africa&apos;s leading tech agency
-                    for web, mobile, and IoT solutions.
+                    <strong>Vision:</strong> {page.vision}
                   </ListItem>
                 </List>
               </ProjectSectionText>
@@ -129,7 +125,7 @@ export const About = () => {
               <ProjectSectionHeading>Location</ProjectSectionHeading>
               <ProjectSectionText as="div">
                 <p>
-                  {config.location} —{' '}
+                  {siteConfig.location} —{' '}
                   <Link href="/contact">Get in touch</Link> to discuss your next project.
                 </p>
               </ProjectSectionText>

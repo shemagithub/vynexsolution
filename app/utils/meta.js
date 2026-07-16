@@ -28,7 +28,7 @@ export function baseMeta({
     { property: 'twitter:description', content: description },
     { property: 'twitter:title', content: titleText },
     { property: 'twitter:site', content: url },
-    { property: 'twitter:creator', content: twitter },
+    ...(twitter ? [{ property: 'twitter:creator', content: twitter }] : []),
     { property: 'twitter:image', content: ogImage },
   ];
 }

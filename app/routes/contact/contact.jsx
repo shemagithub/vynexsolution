@@ -16,8 +16,10 @@ import { cssProps, msToNum, numToMs } from '~/utils/style';
 import { baseMeta } from '~/utils/meta';
 import { Form, useActionData, useNavigation } from '@remix-run/react';
 import { json } from '@remix-run/cloudflare';
-import { SESClient, SendEmailCommand } from '@aws-sdk/client-ses';
-import { socialLinks } from '~/layouts/navbar/nav-data';
+import { postToApi } from '~/utils/api';
+import { getSocialLinks } from '~/layouts/navbar/nav-data';
+import { useSiteConfig } from '~/components/site-config-provider';
+import { getWhatsAppUrl } from '~/utils/whatsapp';
 import config from '~/config.json';
 import styles from './contact.module.css';
 
@@ -32,25 +34,15 @@ const MAX_EMAIL_LENGTH = 512;
 const MAX_MESSAGE_LENGTH = 4096;
 const EMAIL_PATTERN = /(.+)@(.+){2,}\.(.+){2,}/;
 
-export async function action({ context, request }) {
-  const ses = new SESClient({
-    region: 'us-east-1',
-    credentials: {
-      accessKeyId: context.cloudflare.env.AWS_ACCESS_KEY_ID,
-      secretAccessKey: context.cloudflare.env.AWS_SECRET_ACCESS_KEY,
-    },
-  });
-
+export async function clientAction({ request }) {
   const formData = await request.formData();
   const isBot = String(formData.get('name'));
   const email = String(formData.get('email'));
   const message = String(formData.get('message'));
   const errors = {};
 
-  // Return without sending if a bot trips the honeypot
   if (isBot) return json({ success: true });
 
-  // Handle input validation on the server
   if (!email || !EMAIL_PATTERN.test(email)) {
     errors.email = 'Please enter a valid email address.';
   }
@@ -71,31 +63,28 @@ export async function action({ context, request }) {
     return json({ errors });
   }
 
-  // Send email via Amazon SES
-  await ses.send(
-    new SendEmailCommand({
-      Destination: {
-        ToAddresses: [context.cloudflare.env.EMAIL],
+  try {
+    await postToApi('/contact', { email, message });
+  } catch (err) {
+    console.error('Failed to submit contact message:', err);
+    return json({
+      errors: {
+        message: 'Something went wrong. Please try again or email us directly.',
       },
-      Message: {
-        Body: {
-          Text: {
-            Data: `From: ${email}\n\n${message}`,
-          },
-        },
-        Subject: {
-          Data: `Portfolio message from ${email}`,
-        },
-      },
-      Source: `EMBEDIXe <${context.cloudflare.env.FROM_EMAIL}>`,
-      ReplyToAddresses: [email],
-    })
-  );
+    });
+  }
 
   return json({ success: true });
 }
 
 export const Contact = () => {
+  const siteConfig = useSiteConfig();
+  const socialLinks = getSocialLinks(siteConfig);
+  const whatsappUrl = getWhatsAppUrl({
+    name: siteConfig.name,
+    whatsapp: siteConfig.whatsapp,
+    phone: siteConfig.phone,
+  });
   const errorRef = useRef();
   const email = useFormInput('');
   const message = useFormInput('');
@@ -109,19 +98,21 @@ export const Contact = () => {
       <div className={styles.wrapper}>
         <aside className={styles.info}>
           <Text size="l" as="p">
-            <Link href={`mailto:${config.email}`}>{config.email}</Link>
+            <Link href={`mailto:${siteConfig.email}`}>{siteConfig.email}</Link>
           </Text>
+          {siteConfig.phone && (
+            <Text size="l" as="p">
+              <Link href={`tel:${siteConfig.phone.replace(/\s+/g, '')}`}>{siteConfig.phone}</Link>
+            </Text>
+          )}
           <Text size="s" as="p">
-            {config.location}
+            {siteConfig.location}
           </Text>
-          <Button
-            secondary
-            className={styles.whatsapp}
-            href={`https://wa.me/${config.whatsapp.replace(/\D/g, '')}`}
-            icon="send"
-          >
-            WhatsApp
-          </Button>
+          {whatsappUrl && (
+            <Button secondary className={styles.whatsapp} href={whatsappUrl} icon="send">
+              WhatsApp
+            </Button>
+          )}
           <div className={styles.social}>
             {socialLinks.map(({ label, url }) => (
               <Link key={label} href={url}>

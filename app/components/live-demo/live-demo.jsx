@@ -160,7 +160,7 @@ export function LiveDemoViewer({ project, onExit }) {
             className={styles.frame}
             src={project.liveLink}
             title={`Live demo of ${project.title}`}
-            sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox"
+            referrerPolicy="no-referrer"
             onLoad={handleIframeLoad}
             onError={handleIframeError}
             hidden={blocked}

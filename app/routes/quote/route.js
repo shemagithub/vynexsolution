@@ -1,1 +1,1 @@
-export { Quote as default, meta, action } from './quote';
+export { Quote as default, meta, clientAction, clientLoader } from './quote';

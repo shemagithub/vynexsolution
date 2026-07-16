@@ -1,15 +1,3 @@
-import gamestackTexture2Large from '~/assets/gamestack-list-large.jpg';
-import gamestackTexture2Placeholder from '~/assets/gamestack-list-placeholder.jpg';
-import gamestackTexture2 from '~/assets/gamestack-list.jpg';
-import gamestackTextureLarge from '~/assets/gamestack-login-large.jpg';
-import gamestackTexturePlaceholder from '~/assets/gamestack-login-placeholder.jpg';
-import gamestackTexture from '~/assets/gamestack-login.jpg';
-import sliceTextureLarge from '~/assets/slice-app-large.jpg';
-import sliceTexturePlaceholder from '~/assets/slice-app-placeholder.jpg';
-import sliceTexture from '~/assets/slice-app.jpg';
-import sprTextureLarge from '~/assets/spr-lesson-builder-dark-large.jpg';
-import sprTexturePlaceholder from '~/assets/spr-lesson-builder-dark-placeholder.jpg';
-import sprTexture from '~/assets/spr-lesson-builder-dark.jpg';
 import { Footer } from '~/components/footer';
 import { baseMeta } from '~/utils/meta';
 import { Intro } from './intro';
@@ -19,27 +7,17 @@ import { ServicesSection } from './services-section';
 import { Testimonials } from './testimonials';
 import { CtaSection } from './cta-section';
 import { useEffect, useRef, useState } from 'react';
+import { json } from '@remix-run/cloudflare';
+import { useLoaderData } from '@remix-run/react';
+import { loadHomePageData, refreshFromApi } from '~/utils/page-loaders';
 import config from '~/config.json';
 import styles from './home.module.css';
 
-export const links = () => {
-  return [
-    {
-      rel: 'prefetch',
-      href: '/draco/draco_wasm_wrapper.js',
-      as: 'script',
-      type: 'text/javascript',
-      importance: 'low',
-    },
-    {
-      rel: 'prefetch',
-      href: '/draco/draco_decoder.wasm',
-      as: 'fetch',
-      type: 'application/wasm',
-      importance: 'low',
-    },
-  ];
-};
+export async function clientLoader() {
+  return loadHomePageData();
+}
+
+clientLoader.hydrate = true;
 
 export const meta = () => {
   return baseMeta({
@@ -48,8 +26,11 @@ export const meta = () => {
   });
 };
 
+export const links = () => [];
+
 export const Home = () => {
-  const [visibleSections, setVisibleSections] = useState([]);
+  const { homeServices, testimonials: testimonialItems, featuredProjects, homeAbout } = useLoaderData();
+  const [visibleSectionIds, setVisibleSectionIds] = useState(() => new Set());
   const [scrollIndicatorHidden, setScrollIndicatorHidden] = useState(false);
   const intro = useRef();
   const services = useRef();
@@ -59,51 +40,57 @@ export const Home = () => {
   const testimonials = useRef();
   const details = useRef();
   const cta = useRef();
+  const projectRefs = [projectOne, projectTwo, projectThree];
 
   useEffect(() => {
-    const sections = [
+    const sectionRefs = [
       intro,
       services,
-      projectOne,
-      projectTwo,
-      projectThree,
+      ...projectRefs.slice(0, featuredProjects.length),
       testimonials,
       details,
       cta,
     ];
 
     const sectionObserver = new IntersectionObserver(
-      (entries, observer) => {
+      entries => {
         entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            const section = entry.target;
-            observer.unobserve(section);
-            if (visibleSections.includes(section)) return;
-            setVisibleSections(prevSections => [...prevSections, section]);
-          }
+          if (!entry.isIntersecting || !entry.target.id) return;
+          sectionObserver.unobserve(entry.target);
+          setVisibleSectionIds(prev => {
+            if (prev.has(entry.target.id)) return prev;
+            const next = new Set(prev);
+            next.add(entry.target.id);
+            return next;
+          });
         });
       },
-      { rootMargin: '0px 0px -10% 0px', threshold: 0.1 }
+      { rootMargin: '0px 0px -8% 0px', threshold: 0.05 }
     );
 
     const indicatorObserver = new IntersectionObserver(
       ([entry]) => {
-        setScrollIndicatorHidden(!entry.isIntersecting);
+        if (entry) setScrollIndicatorHidden(!entry.isIntersecting);
       },
       { rootMargin: '-100% 0px 0px 0px' }
     );
 
-    sections.forEach(section => {
-      sectionObserver.observe(section.current);
+    sectionRefs.forEach(ref => {
+      const element = ref.current;
+      if (element instanceof Element && element.id) {
+        sectionObserver.observe(element);
+      }
     });
 
-    indicatorObserver.observe(intro.current);
+    if (intro.current instanceof Element) {
+      indicatorObserver.observe(intro.current);
+    }
 
     return () => {
       sectionObserver.disconnect();
       indicatorObserver.disconnect();
     };
-  }, [visibleSections]);
+  }, [featuredProjects.length]);
 
   return (
     <div className={styles.home}>
@@ -115,83 +102,45 @@ export const Home = () => {
       <ServicesSection
         id="services"
         sectionRef={services}
-        visible={visibleSections.includes(services.current)}
+        visible={visibleSectionIds.has('services')}
+        homeServices={homeServices}
       />
-      <ProjectSummary
-        id="project-1"
-        sectionRef={projectOne}
-        visible={visibleSections.includes(projectOne.current)}
-        index={1}
-        title="Smartlink Rwanda"
-        description="Corporate technology website — services, portfolio, and modern brand presence"
-        buttonText="View project"
-        buttonLink="/projects/smartlink"
-        model={{
-          type: 'laptop',
-          alt: 'Smartlink Rwanda website',
-          textures: [
-            {
-              srcSet: `${sprTexture} 1280w, ${sprTextureLarge} 2560w`,
-              placeholder: sprTexturePlaceholder,
-            },
-          ],
-        }}
-      />
-      <ProjectSummary
-        id="project-2"
-        alternate
-        sectionRef={projectTwo}
-        visible={visibleSections.includes(projectTwo.current)}
-        index={2}
-        title="Finverra"
-        description="Fintech platform website with product pages and professional brand experience"
-        buttonText="View project"
-        buttonLink="/projects/finverra"
-        model={{
-          type: 'laptop',
-          alt: 'Finverra fintech website',
-          textures: [
-            {
-              srcSet: `${sliceTexture} 800w, ${sliceTextureLarge} 1920w`,
-              placeholder: sliceTexturePlaceholder,
-            },
-          ],
-        }}
-      />
-      <ProjectSummary
-        id="project-3"
-        sectionRef={projectThree}
-        visible={visibleSections.includes(projectThree.current)}
-        index={3}
-        title="Shingiro — Finverra"
-        description="Product microsite with feature highlights and conversion-focused layout"
-        buttonText="View project"
-        buttonLink="/projects/shingiro"
-        model={{
-          type: 'laptop',
-          alt: 'Shingiro Finverra product page',
-          textures: [
-            {
-              srcSet: `${gamestackTexture} 375w, ${gamestackTextureLarge} 750w`,
-              placeholder: gamestackTexturePlaceholder,
-            },
-          ],
-        }}
-      />
+      {featuredProjects.map((project, index) => (
+        <ProjectSummary
+          key={project.slug}
+          id={`project-${index + 1}`}
+          sectionRef={projectRefs[index]}
+          visible={visibleSectionIds.has(`project-${index + 1}`)}
+          index={index + 1}
+          alternate={index % 2 === 1}
+          title={project.title}
+          description={project.problem || project.description}
+          buttonText="View project"
+          buttonLink={`/projects/${project.slug}`}
+          model={{
+            type: 'laptop',
+            alt: project.title,
+            liveUrl: project.liveLink,
+            previewImage: project.previewImage || '',
+          }}
+        />
+      ))}
       <Testimonials
         id="testimonials"
         sectionRef={testimonials}
-        visible={visibleSections.includes(testimonials.current)}
+        visible={visibleSectionIds.has('testimonials')}
+        testimonials={testimonialItems}
       />
       <Profile
         sectionRef={details}
-        visible={visibleSections.includes(details.current)}
+        visible={visibleSectionIds.has('details')}
         id="details"
+        home={homeAbout}
       />
       <CtaSection
         id="cta"
         sectionRef={cta}
-        visible={visibleSections.includes(cta.current)}
+        visible={visibleSectionIds.has('cta')}
       />
       <Footer />
     </div>

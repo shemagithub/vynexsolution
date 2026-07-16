@@ -1,0 +1,28 @@
+{
+  "name": "embedixe-backend",
+  "version": "1.0.0",
+  "description": "MySQL API and admin panel for EMBEDIXe website",
+  "type": "module",
+  "main": "server.cjs",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "dev": "node --watch app.js",
+    "start": "node server.cjs",
+    "seed": "node src/db/seed.js",
+    "db:setup": "node src/db/setup.js",
+    "db:migrate": "node src/db/migrate.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.18.3",
+    "imapflow": "^1.4.6",
+    "jsonwebtoken": "^9.0.2",
+    "mailparser": "^3.9.14",
+    "mysql2": "^3.9.2",
+    "nodemailer": "^9.0.3"
+  }
+}

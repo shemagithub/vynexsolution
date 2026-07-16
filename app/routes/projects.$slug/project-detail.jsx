@@ -12,21 +12,23 @@ import {
   ProjectSectionText,
   ProjectTextRow,
 } from '~/layouts/project';
-import { getProjectBySlug } from '~/data/content';
+import { getProjectBySlug as fetchProject } from '~/utils/api';
+import { getApiUrl } from '~/utils/api-url';
+import { resolveProjectMedia } from '~/utils/media-url';
 import { baseMeta } from '~/utils/meta';
 import { Link as RouterLink, useLoaderData, useSearchParams } from '@remix-run/react';
 import { json } from '@remix-run/cloudflare';
 import styles from './project-detail.module.css';
 
-export const loader = ({ params }) => {
-  const project = getProjectBySlug(params.slug);
+export async function clientLoader({ params }) {
+  const project = await fetchProject(params.slug);
 
   if (!project) {
     throw new Response('Project not found', { status: 404 });
   }
 
-  return json({ project });
-};
+  return { project: resolveProjectMedia(project, getApiUrl()) };
+}
 
 export const meta = ({ data }) => {
   if (!data?.project) {

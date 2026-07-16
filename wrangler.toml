@@ -1,3 +1,11 @@
+name = "embedixe"
+pages_build_output_dir = "build/client"
+compatibility_date = "2024-01-01"
+
 kv_namespaces = [
-  { id = "MY_KV", binding="MY_KV" }
+  { id = "MY_KV", binding = "MY_KV" }
 ]
+
+[vars]
+API_URL = "https://test.guzekustomz.com"
+SITE_URL = "https://embedixe.korasmart.com"

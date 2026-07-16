@@ -12,7 +12,7 @@ export const translations = {
       about: 'About',
       blog: 'Blog',
       contact: 'Contact',
-      pricing: 'Pricing',
+      pricing: 'Packages',
       quote: 'Get a Quote',
     },
     hero: {
@@ -39,7 +39,7 @@ export const translations = {
       about: 'About',
       blog: 'Blog',
       contact: 'Twandikire',
-      pricing: 'Ibiciro',
+      pricing: 'Amapackage',
       quote: 'Saba Igiciro',
     },
     hero: {
@@ -66,7 +66,7 @@ export const translations = {
       about: 'À propos',
       blog: 'Blog',
       contact: 'Contact',
-      pricing: 'Tarifs',
+      pricing: 'Forfaits',
       quote: 'Demander un devis',
     },
     hero: {

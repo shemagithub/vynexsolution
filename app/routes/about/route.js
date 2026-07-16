@@ -1,1 +1,1 @@
-export { About as default, meta } from './about';
+export { About as default, meta, clientLoader } from './about';

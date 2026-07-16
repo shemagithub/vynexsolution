@@ -171,6 +171,28 @@ export const testimonials = [
   },
 ];
 
+export const aboutPage = {
+  headerTitle: 'About EMBEDIXe',
+  headerDescription:
+    'We exist to help businesses in Rwanda and beyond leverage technology — from web and mobile apps to IoT and smart automation systems.',
+  story:
+    'EMBEDIXe was founded with a simple belief: every business deserves access to world-class technology. Based in Kigali, Rwanda, we started as a small team passionate about embedded systems and software development. Today, we deliver complete digital solutions — from responsive websites to IoT-powered smart systems.',
+  mission:
+    'Empower businesses with innovative, reliable technology solutions that drive growth and efficiency.',
+  vision: "Become East Africa's leading tech agency for web, mobile, and IoT solutions.",
+  home: {
+    title: 'About EMBEDIXe',
+    tagLabel: 'Who we are',
+    paragraph1:
+      'EMBEDIXe is a tech agency based in Kigali, Rwanda. We build web applications, mobile apps, IoT systems, and smart automation solutions for businesses that want to innovate and grow. From startups to established companies, we turn ideas into reliable, scalable products.',
+    paragraph2:
+      'Our team combines software engineering, embedded systems expertise, and digital strategy to deliver end-to-end solutions.',
+    image: '',
+    imageLarge: '',
+    imageAlt: 'EMBEDIXe team working on a project',
+  },
+};
+
 export const team = [
   {
     name: 'Founder & Lead Engineer',

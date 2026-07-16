@@ -7,10 +7,10 @@ import { Text } from '~/components/text';
 import { useTheme } from '~/components/theme-provider';
 import { Transition } from '~/components/transition';
 import { Loader } from '~/components/loader';
-import { useWindowSize } from '~/hooks';
-import { Suspense, lazy, useState } from 'react';
-import { cssProps, media } from '~/utils/style';
+import { Suspense, lazy, useCallback, useState } from 'react';
+import { cssProps } from '~/utils/style';
 import { useHydrated } from '~/hooks/useHydrated';
+import { LiveLaptopPreview } from '~/components/live-laptop-preview';
 import katakana from './katakana.svg';
 import styles from './project-summary.module.css';
 
@@ -32,26 +32,28 @@ export function ProjectSummary({
   ...rest
 }) {
   const [focused, setFocused] = useState(false);
-  const [modelLoaded, setModelLoaded] = useState(false);
+  const [previewReady, setPreviewReady] = useState(false);
   const { theme } = useTheme();
-  const { width } = useWindowSize();
   const isHydrated = useHydrated();
   const titleId = `${id}-title`;
-  const isMobile = width <= media.tablet;
   const svgOpacity = theme === 'light' ? 0.7 : 1;
   const indexText = index < 10 ? `0${index}` : index;
-  const phoneSizes = `(max-width: ${media.tablet}px) 30vw, 20vw`;
-  const laptopSizes = `(max-width: ${media.tablet}px) 80vw, 40vw`;
+  const isLaptop = model.type === 'laptop';
+  const phoneSizes = `(max-width: 1040px) 30vw, 20vw`;
 
   function handleModelLoad() {
-    setModelLoaded(true);
+    setPreviewReady(true);
   }
+
+  const handlePreviewReady = useCallback(() => {
+    setPreviewReady(true);
+  }, []);
 
   function renderKatakana(device, visible) {
     return (
       <svg
         type="project"
-        data-visible={visible && modelLoaded}
+        data-visible={visible && previewReady}
         data-light={theme === 'light'}
         style={cssProps({ opacity: svgOpacity })}
         className={styles.svg}
@@ -101,33 +103,17 @@ export function ProjectSummary({
   function renderPreview(visible) {
     return (
       <div className={styles.preview}>
-        {model.type === 'laptop' && (
+        {isLaptop && (
           <>
             {renderKatakana('laptop', visible)}
-            <div className={styles.model} data-device="laptop">
-              {!modelLoaded && (
-                <Loader center className={styles.loader} data-visible={visible} />
-              )}
-              {isHydrated && visible && (
-                <Suspense>
-                  <Model
-                    alt={model.alt}
-                    cameraPosition={{ x: 0, y: 0, z: 8 }}
-                    showDelay={700}
-                    onLoad={handleModelLoad}
-                    show={visible}
-                    models={[
-                      {
-                        ...deviceModels.laptop,
-                        texture: {
-                          ...model.textures[0],
-                          sizes: laptopSizes,
-                        },
-                      },
-                    ]}
-                  />
-                </Suspense>
-              )}
+            <div className={styles.demo} data-device="laptop">
+              <LiveLaptopPreview
+                liveUrl={model.liveUrl}
+                previewImage={model.previewImage}
+                title={title}
+                visible={visible}
+                onReady={handlePreviewReady}
+              />
             </div>
           </>
         )}
@@ -135,7 +121,7 @@ export function ProjectSummary({
           <>
             {renderKatakana('phone', visible)}
             <div className={styles.model} data-device="phone">
-              {!modelLoaded && (
+              {!previewReady && (
                 <Loader center className={styles.loader} data-visible={visible} />
               )}
               {isHydrated && visible && (
@@ -192,18 +178,8 @@ export function ProjectSummary({
         <Transition in={sectionVisible || focused}>
           {({ visible }) => (
             <>
-              {!alternate && !isMobile && (
-                <>
-                  {renderDetails(visible)}
-                  {renderPreview(visible)}
-                </>
-              )}
-              {(alternate || isMobile) && (
-                <>
-                  {renderPreview(visible)}
-                  {renderDetails(visible)}
-                </>
-              )}
+              {renderDetails(visible)}
+              {renderPreview(visible)}
             </>
           )}
         </Transition>

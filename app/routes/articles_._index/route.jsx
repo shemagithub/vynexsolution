@@ -1,20 +1,17 @@
 import { baseMeta } from '~/utils/meta';
-import { getPosts } from './posts.server';
-import { json } from '@remix-run/cloudflare';
+import { loadBlogPageData } from '~/utils/page-loaders';
+import config from '~/config.json';
 
-export async function loader() {
-  const allPosts = await getPosts();
-  const featured = allPosts.filter(post => post.frontmatter.featured)[0];
-  const posts = allPosts.filter(post => featured?.slug !== post.slug);
-
-  return json({ posts, featured });
+export async function clientLoader() {
+  return loadBlogPageData();
 }
+
+clientLoader.hydrate = true;
 
 export function meta() {
   return baseMeta({
-    title: 'Articles',
-    description:
-      'A collection of technical design and development articles. May contain incoherent ramblings.',
+    title: 'Blog',
+    description: `Articles and insights from ${config.name} — web, mobile, IoT, and product delivery.`,
   });
 }
 

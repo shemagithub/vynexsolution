@@ -1,1 +1,1 @@
-export { Services as default, meta } from './services';
+export { Services as default, meta, clientLoader } from './services';

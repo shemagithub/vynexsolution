@@ -15,30 +15,32 @@ import { media } from '~/utils/style';
 import katakana from './katakana.svg';
 import styles from './profile.module.css';
 
-const ProfileText = ({ visible, titleId }) => (
+const ProfileText = ({ visible, titleId, home }) => (
   <Fragment>
     <Heading className={styles.title} data-visible={visible} level={3} id={titleId}>
-      <DecoderText text="About EMBEDIXe" start={visible} delay={500} />
+      <DecoderText text={home.title} start={visible} delay={500} />
     </Heading>
     <Text className={styles.description} data-visible={visible} size="l" as="p">
-      EMBEDIXe is a tech agency based in Kigali, Rwanda. We build web applications,
-      mobile apps, IoT systems, and smart automation solutions for businesses that want
-      to innovate and grow. From startups to established companies, we turn ideas into
-      reliable, scalable products.
+      {home.paragraph1}
     </Text>
-    <Text className={styles.description} data-visible={visible} size="l" as="p">
-      Our team combines software engineering, embedded systems expertise, and digital
-      strategy to deliver end-to-end solutions. Explore our{' '}
-      <Link href="/services">services</Link>, browse our{' '}
-      <Link href="/portfolio">portfolio</Link>, or{' '}
-      <Link href="/about">learn more about us</Link>.
-    </Text>
+    {home.paragraph2 && (
+      <Text className={styles.description} data-visible={visible} size="l" as="p">
+        {home.paragraph2} Explore our <Link href="/services">services</Link>, browse our{' '}
+        <Link href="/portfolio">portfolio</Link>, or <Link href="/about">learn more about us</Link>.
+      </Text>
+    )}
   </Fragment>
 );
 
-export const Profile = ({ id, visible, sectionRef }) => {
+export const Profile = ({ id, visible, sectionRef, home }) => {
   const [focused, setFocused] = useState(false);
   const titleId = `${id}-title`;
+  const hasCustomImage = Boolean(home?.image?.trim());
+  const imageSrc = hasCustomImage ? home.image : profileImg;
+  const imageLargeSrc = hasCustomImage ? home.imageLarge || home.image : profileImgLarge;
+  const srcSet = `${imageSrc} 480w, ${imageLargeSrc} 960w`;
+  const placeholder = hasCustomImage ? imageSrc : profileImgPlaceholder;
+  const alt = home?.imageAlt || 'EMBEDIXe team working on a project';
 
   return (
     <Section
@@ -55,7 +57,7 @@ export const Profile = ({ id, visible, sectionRef }) => {
         {({ visible, nodeRef }) => (
           <div className={styles.content} ref={nodeRef}>
             <div className={styles.column}>
-              <ProfileText visible={visible} titleId={titleId} />
+              <ProfileText visible={visible} titleId={titleId} home={home} />
               <Button
                 secondary
                 className={styles.button}
@@ -75,19 +77,21 @@ export const Profile = ({ id, visible, sectionRef }) => {
                   collapseDelay={1000}
                 />
                 <div className={styles.tagText} data-visible={visible}>
-                  Who we are
+                  {home?.tagLabel || 'Who we are'}
                 </div>
               </div>
               <div className={styles.image}>
                 <Image
+                  key={imageSrc}
                   reveal
                   delay={100}
-                  placeholder={profileImgPlaceholder}
-                  srcSet={`${profileImg} 480w, ${profileImgLarge} 960w`}
+                  placeholder={placeholder}
+                  src={imageSrc}
+                  srcSet={srcSet}
                   width={960}
                   height={1280}
                   sizes={`(max-width: ${media.mobile}px) 100vw, 480px`}
-                  alt="EMBEDIXe team working on a project"
+                  alt={alt}
                 />
                 <svg className={styles.svg} data-visible={visible} viewBox="0 0 136 766">
                   <use href={`${katakana}#katakana-profile`} />

@@ -4,11 +4,10 @@ import { Heading } from '~/components/heading';
 import { Section } from '~/components/section';
 import { Text } from '~/components/text';
 import { Transition } from '~/components/transition';
-import { testimonials } from '~/data/content';
 import { useState } from 'react';
 import styles from './testimonials.module.css';
 
-export function Testimonials({ id, sectionRef, visible }) {
+export function Testimonials({ id, sectionRef, visible, testimonials = [] }) {
   const [focused, setFocused] = useState(false);
   const titleId = `${id}-title`;
 
