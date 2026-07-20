@@ -13,3 +13,4 @@ backend/uploads/*
 
 public/draco
 storybook-static
+.DS_Store
