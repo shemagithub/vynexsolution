@@ -27,6 +27,13 @@ export default defineConfig({
     }),
     remixCloudflareDevProxy(),
     remix({
+      ignoredRouteFiles: [
+        '**/articles.*.mdx',
+        '**/uses/**',
+        '**/projects.volkihar-knight/**',
+        '**/projects.smart-sparrow/**',
+        '**/projects.slice/**',
+      ],
       routes(defineRoutes) {
         return defineRoutes(route => {
           route('/', 'routes/home/route.js', { index: true });

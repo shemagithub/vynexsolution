@@ -115,16 +115,22 @@ export async function getArticles(env) {
   try {
     const data = await apiRequest('/articles', env);
     const articles = Array.isArray(data) ? data : [];
-    return {
-      articles: articles.map(toBlogPost),
-      _source: 'api',
-    };
+    if (articles.length) {
+      return {
+        articles: articles.map(toBlogPost),
+        _source: 'api',
+      };
+    }
   } catch (error) {
     if (typeof console !== 'undefined') {
       console.warn('[api] getArticles fallback:', error.message);
     }
-    return { articles: [], _source: 'static' };
   }
+
+  return {
+    articles: (staticContent.articles || []).map(toBlogPost),
+    _source: 'static',
+  };
 }
 
 export async function getServices(env) {
@@ -155,7 +161,8 @@ export async function getArticleBySlug(slug, env) {
     if (typeof console !== 'undefined') {
       console.warn('[api] getArticleBySlug fallback:', error.message);
     }
-    return null;
+    const article = (staticContent.articles || []).find(item => item.slug === slug);
+    return article ? { ...toBlogPost(article), _source: 'static' } : null;
   }
 }
 

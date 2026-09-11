@@ -16,6 +16,7 @@
   .content {
     position: relative;
     display: flex;
+    align-items: flex-end;
   }
 
   .input {
@@ -29,6 +30,10 @@
     padding: var(--spaceL) 0 var(--spaceM);
     overflow-x: hidden;
     outline: none;
+
+    .container[data-password='true'] & {
+      padding-right: calc(var(--space2XL) + var(--spaceXS));
+    }
 
     &:-internal-autofill-selected {
       -webkit-text-fill-color: var(--textBody);
@@ -61,12 +66,52 @@
       font-size: max(16px, var(--inputFontSize));
       padding: var(--spaceM) 0 var(--spaceS);
       min-height: 48px;
+
+      .container[data-password='true'] & {
+        padding-right: calc(var(--space2XL) + var(--spaceXS));
+      }
     }
 
     @media (--mediaReduceMotion) {
       #root & {
         transition: background-color 5000s linear 0s;
       }
+    }
+  }
+
+  .passwordToggle {
+    position: absolute;
+    right: 0;
+    bottom: var(--spaceS);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: color-mix(in lab, var(--text) 70%, transparent);
+    cursor: pointer;
+    border-radius: 8px;
+    z-index: 1;
+    transition: color var(--durationS) ease, background-color var(--durationS) ease;
+
+    &:hover,
+    &:focus-visible {
+      color: var(--primary);
+      background: color-mix(in lab, var(--primary) 12%, transparent);
+      outline: none;
+    }
+
+    &[aria-pressed='true'] {
+      color: var(--primary);
+    }
+
+    @media (--mediaMobile) {
+      bottom: 2px;
+      width: 44px;
+      height: 44px;
     }
   }
 

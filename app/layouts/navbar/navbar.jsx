@@ -20,6 +20,7 @@ export const Navbar = ({ siteConfig = config }) => {
   const [current, setCurrent] = useState();
   const [menuOpen, setMenuOpen] = useState(false);
   const [target, setTarget] = useState();
+  const [scrolled, setScrolled] = useState(false);
   const { theme } = useTheme();
   const { t } = useLanguage();
   const location = useLocation();
@@ -30,6 +31,16 @@ export const Navbar = ({ siteConfig = config }) => {
     // Prevent ssr mismatch by storing this in state
     setCurrent(`${location.pathname}${location.hash}`);
   }, [location]);
+
+  useEffect(() => {
+    const updateScrolled = () => {
+      setScrolled(window.scrollY > 24);
+    };
+
+    updateScrolled();
+    window.addEventListener('scroll', updateScrolled, { passive: true });
+    return () => window.removeEventListener('scroll', updateScrolled);
+  }, []);
 
   // Handle smooth scroll nav items
   useEffect(() => {
@@ -163,7 +174,11 @@ export const Navbar = ({ siteConfig = config }) => {
   }, [location.pathname, location.hash]);
 
   return (
-    <header className={styles.navbar} ref={headerRef}>
+    <header
+      className={styles.navbar}
+      ref={headerRef}
+      data-scrolled={scrolled || undefined}
+    >
       <RouterLink
         unstable_viewTransition
         prefetch="intent"

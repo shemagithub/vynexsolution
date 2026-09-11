@@ -1,4 +1,4 @@
-name = "embedixe"
+name = "vynex-solutions"
 pages_build_output_dir = "build/client"
 compatibility_date = "2024-01-01"
 
@@ -7,5 +7,5 @@ kv_namespaces = [
 ]
 
 [vars]
-API_URL = "https://test.guzekustomz.com"
-SITE_URL = "https://embedixe.korasmart.com"
+API_URL = "https://backend.vynexsoultions.com"
+SITE_URL = "https://vynexsoultions.com"

@@ -1,0 +1,135 @@
+Vynex Solutions — Backend cPanel / Node.js setup
+================================================
+
+ZIP CONTENTS
+------------
+Extract this zip into the Node app folder, for example:
+  /home/YOURUSER/backend.vynexsoultions.com
+
+Do NOT put this inside public_html unless you know how to protect it.
+
+
+STEP 1 — Create MySQL database
+------------------------------
+1. cPanel → MySQL Databases
+2. Create database (example name: vynex)
+3. Create a MySQL user with a strong password
+4. Add the user to the database with ALL PRIVILEGES
+5. Note the FULL names cPanel shows, e.g.:
+     Database: youruser_vynex
+     User:     youruser_vynex
+
+Tables are created AUTOMATICALLY when the Node app starts
+(as long as DB_* env vars are correct). You do NOT need to
+import schema.sql by hand.
+
+
+STEP 2 — Create Node.js app
+---------------------------
+1. cPanel → Setup Node.js App → Create Application
+2. Settings:
+   - Node.js version: 18.x or 20.x (recommended)
+   - Application mode: Production
+   - Application root: path to the extracted backend folder
+       Example: backend.vynexsoultions.com
+   - Application URL: backend.vynexsoultions.com (or your API host)
+   - Application startup file: server.cjs
+3. Click Create
+
+
+STEP 3 — Environment variables
+------------------------------
+In the Node.js app page, set Environment variables (or create .env
+in the application root). Required:
+
+  NODE_ENV=production
+  PORT=4000
+
+  DB_HOST=localhost
+  DB_PORT=3306
+  DB_USER=youruser_vynex
+  DB_PASSWORD=your-db-password
+  DB_NAME=youruser_vynex
+
+  JWT_SECRET=long-random-secret
+  ADMIN_EMAIL=admin@vynexsoultions.com
+  ADMIN_PASSWORD=choose-a-strong-password
+
+  CORS_ORIGIN=https://vynexsoultions.com
+  CORS_ORIGINS=https://www.vynexsoultions.com,https://vynexsoultions.com
+
+  MAIL_IMAP_HOST=localhost
+  MAIL_IMAP_PORT=993
+  MAIL_SMTP_HOST=localhost
+  MAIL_SMTP_PORT=465
+  MAIL_USER=info@vynexsoultions.com
+  MAIL_PASS=your-mailbox-password
+  MAIL_FROM_NAME=Vynex Solutions
+  MAIL_NOTIFY_TO=info@vynexsoultions.com
+  SITE_EMAIL=info@vynexsoultions.com
+  SITE_URL=https://vynexsoultions.com
+  MAIL_TLS_REJECT_UNAUTHORIZED=false
+
+Notes:
+- Use FULL cPanel DB names (with the account prefix).
+- Same server as mail → use localhost for MAIL_*_HOST.
+
+
+STEP 4 — Install dependencies (REQUIRED)
+----------------------------------------
+This fixes: Cannot find package 'express'
+
+In the Node.js App page, click "Run NPM Install"
+  OR via Terminal / SSH:
+
+  cd ~/backend.vynexsoultions.com
+  source ~/nodevenv/backend.vynexsoultions.com/*/bin/activate
+  npm install --production
+
+Then Restart the app.
+
+Without this step the app cannot start.
+
+
+STEP 5 — Start / Restart
+------------------------
+cPanel → Setup Node.js App → Restart.
+
+On first start the app will:
+  - create all MySQL tables
+  - seed projects, services, team, settings, admin user
+
+Test:
+  https://backend.vynexsoultions.com/health
+  https://backend.vynexsoultions.com/api/config
+
+You should see JSON. Check Logs if not.
+
+
+STEP 6 — Frontend
+-----------------
+Point the site API_URL to:
+  https://backend.vynexsoultions.com
+
+CORS_ORIGIN / CORS_ORIGINS must include your site domain.
+
+
+ADMIN LOGIN
+-----------
+https://vynexsoultions.com/admin/login
+Use ADMIN_EMAIL + ADMIN_PASSWORD from the environment.
+
+
+TROUBLESHOOTING
+---------------
+- Cannot find package 'express'
+    → Run NPM Install, then Restart. Confirm Application root
+      contains package.json and node_modules/express after install.
+- Table '....projects' doesn't exist
+    → App could not connect or create tables. Fix DB_* vars, Restart.
+      Or manually: npm run db:ensure
+- Access denied MySQL → wrong DB_USER / DB_PASSWORD / DB_NAME prefix
+- Mail refused → MAIL_*_HOST=localhost and restart
+- CORS errors → add frontend domain to CORS_ORIGINS
+
+Startup file must stay: server.cjs

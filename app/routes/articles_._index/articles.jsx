@@ -46,6 +46,7 @@ function ArticlesPost({ slug, frontmatter, timecode, index }) {
             placeholder={`${banner.split('.')[0]}-placeholder.jpg`}
             alt=""
             role="presentation"
+            sizes="(max-width: 696px) 100vw, (max-width: 1040px) 90vw, 720px"
           />
         </div>
       )}

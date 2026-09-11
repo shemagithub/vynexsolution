@@ -12,7 +12,7 @@ import { Transition } from '~/components/transition';
 import { useFormInput } from '~/hooks';
 import { useEffect, useRef, useState } from 'react';
 import { cssProps, msToNum, numToMs } from '~/utils/style';
-import { baseMeta } from '~/utils/meta';
+import { pageMeta } from '~/utils/meta';
 import { Form, useActionData, useLoaderData, useNavigation } from '@remix-run/react';
 import { json } from '@remix-run/cloudflare';
 import { postToApi } from '~/utils/api';
@@ -25,12 +25,7 @@ export async function clientLoader() {
 
 clientLoader.hydrate = true;
 
-export const meta = () => {
-  return baseMeta({
-    title: 'Request a Quote',
-    description: 'Tell us about your project and get a custom quote from EMBEDIXe.',
-  });
-};
+export const meta = () => pageMeta('/quote');
 
 const MAX_EMAIL_LENGTH = 512;
 const MAX_MESSAGE_LENGTH = 4096;
@@ -242,10 +237,14 @@ export const Quote = () => {
                   <div className={styles.formErrorContent} ref={errorRef}>
                     <div className={styles.formErrorMessage}>
                       <Icon className={styles.formErrorIcon} icon="error" />
-                      {actionData?.errors?.email}
-                      {actionData?.errors?.projectType}
-                      {actionData?.errors?.deadline}
-                      {actionData?.errors?.message}
+                      {[
+                        actionData?.errors?.email,
+                        actionData?.errors?.projectType,
+                        actionData?.errors?.deadline,
+                        actionData?.errors?.message,
+                      ]
+                        .filter(Boolean)
+                        .join(' · ')}
                     </div>
                   </div>
                 </div>

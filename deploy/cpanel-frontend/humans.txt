@@ -1,39 +1,35 @@
-__  __  __
-\ \ \ \ \/
- \ \/\ \
-  \/  \/
+Vynex Solutions
+Kigali, Rwanda
 
 The humans.txt file explains the team, technology,
 and graphic assets behind this site humanstxt.org.
 
 _______________________________________________________________________________
 
-DESIGNER | デザイナー
+TEAM | IKIPE
 
-Hamish Williams
-Hand crafted design & web development
+Vynex Solutions
+Website development, systems design, mobile apps,
+IoT and smart systems for growing businesses
 
-Design tools:
-Figma
-Photoshop
-Blender
-
-twitter.com/hamishmw
-github.com/hamishmw
+info@vynexsoultions.com
+https://vynexsoultions.com
 
 _______________________________________________________________________________
 
-TECHNOLOGY | テクノロジー
+TECHNOLOGY | ITECHNOLOGY
 
 React
 Remix
 Three.js
 Framer Motion
+Node.js
+MySQL
 
 _______________________________________________________________________________
 
-FONTS | フォント
+FONTS | IMYANDIKIRE
 
 Gotham
+Black Ops One
 IPA Gothic Regular
-Hiragino Kaku Gothic W8

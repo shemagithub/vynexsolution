@@ -1,5 +1,6 @@
 .quote {
   --formHeight: 530px;
+  --mobileNavOffset: calc(var(--spaceOuter) * 2 + 3.25rem);
 
   display: grid;
   grid-template-rows: 1fr auto;
@@ -13,7 +14,7 @@
   overflow-x: clip;
   padding-inline: var(--spaceOuter);
 
-  @media (--mediaMobile) {
+  @media (--mediaTablet) {
     align-items: start;
     padding-top: calc(var(--mobileNavOffset) + var(--spaceS));
     padding-bottom: calc(var(--spaceL) + env(safe-area-inset-bottom, 0px));

@@ -13,22 +13,16 @@ import { Transition } from '~/components/transition';
 import { useFormInput } from '~/hooks';
 import { useRef } from 'react';
 import { cssProps, msToNum, numToMs } from '~/utils/style';
-import { baseMeta } from '~/utils/meta';
+import { pageMeta } from '~/utils/meta';
 import { Form, useActionData, useNavigation } from '@remix-run/react';
 import { json } from '@remix-run/cloudflare';
 import { postToApi } from '~/utils/api';
 import { getSocialLinks } from '~/layouts/navbar/nav-data';
 import { useSiteConfig } from '~/components/site-config-provider';
 import { getWhatsAppUrl } from '~/utils/whatsapp';
-import config from '~/config.json';
 import styles from './contact.module.css';
 
-export const meta = () => {
-  return baseMeta({
-    title: 'Contact',
-    description: `Get in touch with ${config.name} — email, WhatsApp, or send us a message.`,
-  });
-};
+export const meta = () => pageMeta('/contact');
 
 const MAX_EMAIL_LENGTH = 512;
 const MAX_MESSAGE_LENGTH = 4096;
@@ -153,6 +147,8 @@ export const Contact = () => {
               label="Name"
               name="name"
               maxLength={MAX_EMAIL_LENGTH}
+              tabIndex={-1}
+              autoComplete="off"
             />
             <Input
               required
@@ -195,8 +191,12 @@ export const Contact = () => {
                   <div className={styles.formErrorContent} ref={errorRef}>
                     <div className={styles.formErrorMessage}>
                       <Icon className={styles.formErrorIcon} icon="error" />
-                      {actionData?.errors?.email}
-                      {actionData?.errors?.message}
+                      {[
+                        actionData?.errors?.email,
+                        actionData?.errors?.message,
+                      ]
+                        .filter(Boolean)
+                        .join(' · ')}
                     </div>
                   </div>
                 </div>

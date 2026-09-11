@@ -1,12 +1,21 @@
 import config from '~/config.json';
 
-const PRODUCTION_API_URL = (config.apiUrl || 'https://test.guzekustomz.com').replace(/\/$/, '');
+const PRODUCTION_API_URL = (
+  config.apiUrl || 'https://backend.vynexsoultions.com'
+).replace(/\/$/, '');
+
 const LOCAL_API_URL = 'http://localhost:4000';
+
+function isLocalHost(url = '') {
+  return /localhost|127\.0\.0\.1/i.test(url);
+}
 
 function readEnvApiUrl(env) {
   return (
     env?.API_URL?.replace(/\/$/, '') ||
-    (typeof import.meta !== 'undefined' ? import.meta.env?.API_URL?.replace(/\/$/, '') : undefined) ||
+    (typeof import.meta !== 'undefined'
+      ? import.meta.env?.API_URL?.replace(/\/$/, '')
+      : undefined) ||
     (typeof process !== 'undefined' ? process.env.API_URL?.replace(/\/$/, '') : undefined)
   );
 }
@@ -23,8 +32,7 @@ function normalizeApiUrl(url) {
 
   // HTTPS pages cannot fetch HTTP APIs (mixed content). Upgrade production API URLs.
   if (typeof window !== 'undefined' && window.location.protocol === 'https:') {
-    const isLocal = cleaned.includes('localhost') || cleaned.includes('127.0.0.1');
-    if (!isLocal && cleaned.startsWith('http://')) {
+    if (!isLocalHost(cleaned) && cleaned.startsWith('http://')) {
       return cleaned.replace(/^http:\/\//, 'https://');
     }
   }
@@ -32,18 +40,28 @@ function normalizeApiUrl(url) {
   return cleaned;
 }
 
+/**
+ * Resolve the backend API base URL.
+ * When config.apiUrl is a remote host, ignore stale localhost overrides from
+ * old .dev.vars / meta tags so admin + public requests hit production.
+ */
 export function getApiUrl(env) {
-  const fromEnv = readEnvApiUrl(env);
-  if (fromEnv) return normalizeApiUrl(fromEnv);
+  const remoteConfigured = !isLocalHost(PRODUCTION_API_URL);
+  const candidates = [readEnvApiUrl(env), readMetaApiUrl(), PRODUCTION_API_URL]
+    .filter(Boolean)
+    .map(normalizeApiUrl);
 
-  const fromMeta = readMetaApiUrl();
-  if (fromMeta) return normalizeApiUrl(fromMeta);
+  if (remoteConfigured) {
+    const remote = candidates.find(url => !isLocalHost(url));
+    if (remote) return remote;
+    return PRODUCTION_API_URL;
+  }
 
-  return PRODUCTION_API_URL;
+  return candidates[0] || PRODUCTION_API_URL;
 }
 
 export function isLocalApi(url = getApiUrl()) {
-  return url.includes('localhost') || url.includes('127.0.0.1');
+  return isLocalHost(url);
 }
 
 export { PRODUCTION_API_URL, LOCAL_API_URL };

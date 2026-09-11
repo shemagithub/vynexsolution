@@ -11,7 +11,7 @@
   RewriteRule ^ - [L]
 
   # Proxy API requests to the backend (optional — use if frontend and API share hosting)
-  # RewriteRule ^api/(.*)$ https://api.korasmart.com/api/$1 [P,L]
+  # RewriteRule ^api/(.*)$ https://backend.vynexsoultions.com/api/$1 [P,L]
 
   # Remix client-side routing fallback
   RewriteRule ^ index.html [L]

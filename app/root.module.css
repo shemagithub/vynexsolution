@@ -5,7 +5,8 @@
     transition: opacity 0.4s var(--bezierFastoutSlowin);
 
     &[data-loading='true'] {
-      opacity: 0;
+      opacity: 0.72;
+      pointer-events: none;
     }
 
     &[data-admin='true'] {

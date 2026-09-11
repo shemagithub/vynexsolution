@@ -17,7 +17,7 @@ export function HomeAboutTextFields({ home = {}, image, imageLarge, onImageChang
         Homepage about copy
       </Heading>
       <Text secondary size="s">
-        Text shown in the &ldquo;About EMBEDIXe&rdquo; block on the homepage.
+        Text shown in the &ldquo;About Vynex Solutions&rdquo; block on the homepage.
       </Text>
 
       <label>
@@ -144,7 +144,7 @@ export function HomeAboutImagePanel({ home = {} }) {
         Homepage about image
       </Heading>
       <Text secondary size="s">
-        This is the portrait photo on the right side of the &ldquo;About EMBEDIXe&rdquo; section on
+        This is the portrait photo on the right side of the &ldquo;About Vynex Solutions&rdquo; section on
         the homepage. Uploading saves the file and stores the image path in the database.
       </Text>
 

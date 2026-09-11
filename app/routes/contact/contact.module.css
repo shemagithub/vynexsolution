@@ -1,5 +1,6 @@
 .contact {
   --formHeight: 530px;
+  --mobileNavOffset: calc(var(--spaceOuter) * 2 + 3.25rem);
 
   display: grid;
   grid-template-rows: 1fr auto;
@@ -9,9 +10,21 @@
   align-items: center;
   min-height: 100vh;
   width: 100%;
+  max-width: 100%;
+  overflow-x: clip;
+
+  @media (--mediaTablet) {
+    align-items: start;
+    padding-top: calc(var(--mobileNavOffset) + var(--spaceS));
+    padding-bottom: calc(var(--spaceL) + env(safe-area-inset-bottom, 0px));
+  }
 
   @media (--mediaMobile) {
-    padding-top: 0;
+    padding-top: calc(var(--mobileNavOffset) + var(--spaceS));
+  }
+
+  @media (--mediaMobileS) {
+    padding-top: var(--mobileNavOffset);
   }
 }
 
@@ -36,7 +49,7 @@
   gap: var(--spaceM);
 
   @media (--mediaTablet) {
-    padding-top: var(--space5XL);
+    padding-top: var(--spaceL);
   }
 }
 

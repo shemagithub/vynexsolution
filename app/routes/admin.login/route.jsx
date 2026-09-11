@@ -18,8 +18,10 @@ import styles from '~/layouts/admin/admin.module.css';
 export const meta = () => {
   return baseMeta({
     title: 'Admin Login',
-    description: 'Sign in to the EMBEDIXe admin portal.',
+    description: 'Sign in to the Vynex Solutions admin portal.',
     prefix: '',
+    robots: 'noindex, nofollow',
+    pathname: '/admin/login',
   });
 };
 
@@ -119,7 +121,7 @@ export default function AdminLogin() {
           Admin Portal
         </Heading>
         <Text secondary size="s" className={styles.loginSubtitle}>
-          Sign in to manage EMBEDIXe website content.
+          Sign in to manage Vynex Solutions website content.
         </Text>
         <Input
           required

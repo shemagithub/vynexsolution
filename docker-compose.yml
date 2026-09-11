@@ -1,13 +1,13 @@
 services:
   mysql:
     image: mysql:8.0
-    container_name: embedixe-mysql
+    container_name: vynex-mysql
     restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: embedixe
-      MYSQL_USER: embedixe
-      MYSQL_PASSWORD: embedixe123
+      MYSQL_DATABASE: vynex
+      MYSQL_USER: vynex
+      MYSQL_PASSWORD: vynex123
     ports:
       - '3306:3306'
     volumes:
@@ -21,7 +21,7 @@ services:
 
   backend:
     build: ./backend
-    container_name: embedixe-backend
+    container_name: vynex-backend
     restart: unless-stopped
     ports:
       - '4000:4000'
@@ -30,13 +30,25 @@ services:
       PORT: 4000
       DB_HOST: mysql
       DB_PORT: 3306
-      DB_USER: embedixe
-      DB_PASSWORD: embedixe123
-      DB_NAME: embedixe
+      DB_USER: vynex
+      DB_PASSWORD: vynex123
+      DB_NAME: vynex
       JWT_SECRET: change-this-in-production
-      ADMIN_EMAIL: admin@embedixe.com
+      ADMIN_EMAIL: admin@vynexsoultions.com
       ADMIN_PASSWORD: admin123
       CORS_ORIGIN: http://localhost:7777
+      MAIL_IMAP_HOST: vynexsoultions.com
+      MAIL_IMAP_PORT: 993
+      MAIL_SMTP_HOST: vynexsoultions.com
+      MAIL_SMTP_PORT: 465
+      MAIL_USER: info@vynexsoultions.com
+      # Prefer MAIL_PASS from backend/.env / host environment — do not commit secrets
+      MAIL_PASS: ${MAIL_PASS:-}
+      MAIL_FROM_NAME: Vynex Solutions
+      MAIL_NOTIFY_TO: info@vynexsoultions.com
+      SITE_EMAIL: info@vynexsoultions.com
+      SITE_URL: https://vynexsoultions.com
+      MAIL_TLS_REJECT_UNAUTHORIZED: "false"
     depends_on:
       mysql:
         condition: service_healthy

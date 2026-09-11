@@ -701,7 +701,7 @@
   line-height: 1.65;
   word-break: break-word;
   -webkit-overflow-scrolling: touch;
-  background: color-mix(in srgb, var(--mail-surface) 40%, var(--background) 60%);
+  background: color-mix(in srgb, var(--mail-surface) 55%, var(--background) 45%);
 
   @media (--mediaMobile) {
     padding: var(--spaceM);
@@ -728,6 +728,8 @@
 
 .detailBodyHtml {
   overflow-x: auto;
+  color: var(--textBody);
+  color-scheme: dark light;
 
   :global(img) {
     max-width: 100%;
@@ -736,13 +738,38 @@
   }
 
   :global(table) {
+    width: 100% !important;
     max-width: 100%;
-    display: block;
-    overflow-x: auto;
+    border-collapse: collapse;
+    border-spacing: 0;
+    margin: var(--spaceM) 0;
+    overflow: hidden;
+    border-radius: 8px;
+    border: 1px solid var(--mail-border) !important;
+    background: color-mix(in srgb, var(--mail-surface) 88%, var(--background)) !important;
+  }
+
+  :global(td),
+  :global(th) {
+    padding: 10px 12px !important;
+    border-color: var(--mail-border) !important;
+    color: var(--textBody) !important;
+    background: transparent !important;
+    vertical-align: top;
+  }
+
+  :global(th) {
+    background: color-mix(in srgb, var(--primary) 14%, var(--mail-surface)) !important;
+    color: var(--textBody) !important;
+    font-weight: var(--fontWeightMedium);
+  }
+
+  :global(tr:nth-child(even) td) {
+    background: color-mix(in srgb, var(--text) 4%, transparent) !important;
   }
 
   :global(a) {
-    color: var(--primary);
+    color: var(--primary) !important;
     word-break: break-all;
   }
 
@@ -751,6 +778,99 @@
     padding-left: var(--spaceM);
     border-left: 3px solid var(--mail-border);
     color: var(--textLight);
+  }
+
+  :global(p),
+  :global(span),
+  :global(div),
+  :global(li),
+  :global(font),
+  :global(strong),
+  :global(b),
+  :global(em),
+  :global(h1),
+  :global(h2),
+  :global(h3),
+  :global(h4),
+  :global(h5),
+  :global(h6) {
+    color: inherit !important;
+    background-color: transparent !important;
+    background-image: none !important;
+  }
+
+  :global(hr) {
+    border: none;
+    border-top: 1px solid var(--mail-border);
+    margin: var(--spaceM) 0;
+  }
+
+  :global(pre),
+  :global(code) {
+    background: color-mix(in srgb, var(--text) 6%, var(--mail-surface)) !important;
+    color: var(--textBody) !important;
+    border-radius: 6px;
+  }
+}
+
+/* Dark mode: neutralize light-email chrome (white/yellow tables, black text) */
+:global([data-theme='dark']) .detailBodyHtml {
+  color-scheme: dark;
+
+  :global(*:not(img):not(svg):not(video)) {
+    color: var(--textBody) !important;
+    border-color: var(--mail-border) !important;
+  }
+
+  :global(table),
+  :global(td),
+  :global(th),
+  :global(tr),
+  :global(tbody),
+  :global(thead),
+  :global(div),
+  :global(section),
+  :global(article),
+  :global(center),
+  :global(body),
+  :global(font),
+  :global(p),
+  :global(span) {
+    background-color: transparent !important;
+    background-image: none !important;
+  }
+
+  :global(table) {
+    background: color-mix(in srgb, var(--mail-surface) 70%, #0d0d12) !important;
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--primary) 12%, transparent);
+  }
+
+  :global(th) {
+    background: color-mix(in srgb, var(--primary) 18%, #14141c) !important;
+  }
+
+  :global(td) {
+    background: color-mix(in srgb, var(--mail-surface) 55%, transparent) !important;
+  }
+
+  :global(tr:nth-child(even) td) {
+    background: color-mix(in srgb, var(--primary) 6%, #121218) !important;
+  }
+
+  :global(a) {
+    color: var(--primary) !important;
+  }
+}
+
+:global([data-theme='light']) .detailBodyHtml {
+  color-scheme: light;
+
+  :global(table) {
+    background: color-mix(in srgb, var(--mail-surface) 92%, white) !important;
+  }
+
+  :global(th) {
+    background: color-mix(in srgb, var(--primary) 10%, white) !important;
   }
 }
 

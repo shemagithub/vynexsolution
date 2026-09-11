@@ -18,18 +18,21 @@ export const Input = ({
   autoComplete,
   required,
   maxLength,
-  type,
+  type = 'text',
   onChange,
   name,
   ...rest
 }) => {
   const [focused, setFocused] = useState(false);
+  const [passwordVisible, setPasswordVisible] = useState(false);
   const generatedId = useId();
   const errorRef = useRef();
   const inputId = id || `${generatedId}input`;
   const labelId = `${inputId}-label`;
   const errorId = `${inputId}-error`;
+  const isPassword = type === 'password';
   const InputElement = multiline ? TextArea : 'input';
+  const inputType = isPassword ? (passwordVisible ? 'text' : 'password') : type;
 
   const handleBlur = event => {
     setFocused(false);
@@ -43,6 +46,7 @@ export const Input = ({
     <div
       className={classes(styles.container, className)}
       data-error={!!error}
+      data-password={isPassword || undefined}
       style={style}
       {...rest}
     >
@@ -68,9 +72,21 @@ export const Input = ({
           autoComplete={autoComplete}
           required={required}
           maxLength={maxLength}
-          type={type}
+          type={inputType}
           name={name}
         />
+        {isPassword && (
+          <button
+            type="button"
+            className={styles.passwordToggle}
+            onClick={() => setPasswordVisible(visible => !visible)}
+            aria-label={passwordVisible ? 'Hide password' : 'Show password'}
+            aria-pressed={passwordVisible}
+            title={passwordVisible ? 'Hide password' : 'Show password'}
+          >
+            <Icon icon={passwordVisible ? 'eye-off' : 'eye'} size={20} />
+          </button>
+        )}
         <div className={styles.underline} data-focused={focused} />
       </div>
       <Transition unmount in={error} timeout={msToNum(tokens.base.durationM)}>

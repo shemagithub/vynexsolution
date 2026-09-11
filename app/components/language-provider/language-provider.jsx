@@ -7,7 +7,7 @@ export function LanguageProvider({ children }) {
   const [lang, setLang] = useState('en');
 
   useEffect(() => {
-    const stored = localStorage.getItem('embedixe-lang');
+    const stored = localStorage.getItem('vynex-lang');
     if (stored && translations[stored]) {
       setLang(stored);
     }
@@ -15,7 +15,7 @@ export function LanguageProvider({ children }) {
 
   function changeLang(code) {
     setLang(code);
-    localStorage.setItem('embedixe-lang', code);
+    localStorage.setItem('vynex-lang', code);
   }
 
   const t = translations[lang] || translations.en;

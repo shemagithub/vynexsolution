@@ -43,6 +43,14 @@
     grid-template-columns: 100%;
   }
 
+  @media (--mediaTablet), (--mediaMobileLS) {
+    gap: var(--space2XL);
+    padding-bottom: var(--spaceXL);
+    padding-top: calc(var(--spaceOuter) * 2 + 3.5rem);
+    padding-left: var(--spaceOuter);
+    padding-right: var(--spaceOuter);
+  }
+
   @media (--mediaMobile), (--mediaMobileLS) {
     gap: var(--space2XL);
     padding-bottom: var(--spaceXL);

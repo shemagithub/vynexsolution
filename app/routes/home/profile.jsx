@@ -40,7 +40,7 @@ export const Profile = ({ id, visible, sectionRef, home }) => {
   const imageLargeSrc = hasCustomImage ? home.imageLarge || home.image : profileImgLarge;
   const srcSet = `${imageSrc} 480w, ${imageLargeSrc} 960w`;
   const placeholder = hasCustomImage ? imageSrc : profileImgPlaceholder;
-  const alt = home?.imageAlt || 'EMBEDIXe team working on a project';
+  const alt = home?.imageAlt || 'Vynex Solutions team working on a project';
 
   return (
     <Section

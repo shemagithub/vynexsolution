@@ -197,7 +197,7 @@ export default function AdminSettings() {
                 className={styles.select}
                 name="instagram"
                 defaultValue={settings.instagram || ''}
-                placeholder="embedixe"
+                placeholder="vynexsolutions"
               />
             </AdminField>
             <AdminField label="LinkedIn (company slug)">
@@ -205,7 +205,7 @@ export default function AdminSettings() {
                 className={styles.select}
                 name="linkedin"
                 defaultValue={settings.linkedin || ''}
-                placeholder="embedixe"
+                placeholder="vynex-solutions"
               />
             </AdminField>
           </div>
@@ -214,7 +214,7 @@ export default function AdminSettings() {
               className={styles.select}
               name="github"
               defaultValue={settings.github || ''}
-              placeholder="embedixe"
+              placeholder="vynexsolutions"
             />
           </AdminField>
         </AdminSection>

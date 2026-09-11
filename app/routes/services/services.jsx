@@ -15,8 +15,7 @@ import {
   ProjectSectionText,
   ProjectTextRow,
 } from '~/layouts/project';
-import { baseMeta } from '~/utils/meta';
-import config from '~/config.json';
+import { pageMeta } from '~/utils/meta';
 import { useLoaderData } from '@remix-run/react';
 import { loadServicesPageData } from '~/utils/page-loaders';
 import styles from './services.module.css';
@@ -27,12 +26,7 @@ export async function clientLoader() {
 
 clientLoader.hydrate = true;
 
-export const meta = () => {
-  return baseMeta({
-    title: 'Services',
-    description: `${config.name} offers software development, mobile apps, IoT systems, and digital services.`,
-  });
-};
+export const meta = () => pageMeta('/services');
 
 export const Services = () => {
   const { serviceCategories = [], homeServices = [] } = useLoaderData();
@@ -48,8 +42,8 @@ export const Services = () => {
           opacity={0.7}
         />
         <ProjectHeader
-          title="Our Services"
-          description="From web and mobile development to IoT systems and digital marketing — we deliver end-to-end solutions tailored to your business."
+          title="Website Development, Systems Design & More"
+          description="From website development and systems design to mobile apps, IoT, and SEO — end-to-end solutions tailored to your business."
           linkLabel="Request a quote"
           url="/quote"
         />

@@ -1,56 +1,102 @@
-<p align="center">
-  <img src="/public/favicon.svg" width="50" alt="Logo" />
-</p>
-<h1 align="center">Personal portfolio</h1>
+# Vynex Solutions
 
-[![Site preview](/public/site-preview.png)](https://hamishw.com)
+Official website and CMS for **Vynex Solutions** — a Kigali-based tech agency building web apps, mobile apps, IoT systems, and smart automation.
 
-My design portfolio to showcase a few projects. Built with [Remix](https://remix.run/), [Three.js](https://threejs.org/), and [Framer Motion](https://www.framer.com/motion/). View the [live site](https://hamishw.com) or check out a live version of the [components storybook](https://storybook.hamishw.com).
+## Stack
 
-## Install & run
+| Layer | Tech |
+|-------|------|
+| Frontend | Remix 2, React 18, Vite, Framer Motion, Three.js |
+| Backend | Express, MySQL, JWT auth |
+| Admin | Remix `/admin` portal (content, mail, quotes, settings) |
+| Deploy | Cloudflare Pages or cPanel static SPA |
 
-Make sure you have nodejs `19.9.0` or higher and npm `9.6.3` or higher installed. Install dependencies with:
+## Quick start
+
+### 1. Backend (API + MySQL)
 
 ```bash
+# Start MySQL + API with Docker
+docker compose up -d
+
+# Or run MySQL yourself, then:
+cd backend
+cp .env.example .env   # edit DB credentials
 npm install
+npm run db:setup
+npm run seed
+npm run dev            # http://localhost:4000
 ```
 
-Once it's done start up a local server with:
+Default admin (change in production):
+
+- Email: `admin@vynexsolutions.com`
+- Password: `admin123` (or `ADMIN_PASSWORD` from env)
+
+### 2. Frontend
 
 ```bash
-npm run dev
+cp .dev.vars.example .dev.vars   # API_URL=http://localhost:4000
+npm install
+npm run dev                      # http://localhost:7777
 ```
 
-To view the components storybook:
+### 3. Useful scripts
 
 ```bash
-npm run dev:storybook
+npm run backend:dev      # Express API
+npm run backend:seed     # Re-seed CMS content
+npm run build            # Cloudflare / Remix build
+npm run build:cpanel     # Static SPA for cPanel
 ```
 
-## Deployment
+## Site pages
 
-I've set up the site using Cloudflare for hosting. Deploy the site to Cloudflare Pages:
+- `/` — Home
+- `/services`, `/portfolio`, `/pricing`, `/about`
+- `/articles`, `/contact`, `/quote`
+- `/projects/:slug` — Project detail
+- `/admin` — CMS login
+
+## Configuration
+
+Brand and contact defaults live in:
+
+- `app/config.json` — frontend fallbacks
+- Backend seed: `backend/src/data/seed-data.js`
+- Runtime site settings: Admin → Settings (stored in MySQL)
+
+Environment:
+
+- Frontend: `.dev.vars` / Wrangler vars (`SITE_URL`, `API_URL`)
+- Backend: `backend/.env` (see `.env.example`)
+
+## Deploy
+
+**Cloudflare Pages**
 
 ```bash
 npm run deploy
 ```
 
-## Permissions
+**cPanel**
 
-I'm cool with anyone using the code or parts of the code for their own site, it is open source so people can learn from it and adapt it. However, I would encourage you to modify the theme and components it to make it your own. If you are using the site's design largely unmodified, I'd appreciate being credited as the designer of the website.
+```bash
+npm run build:cpanel
+# Upload build/client (or use .cpanel.yml after setting DEPLOYPATH)
+```
 
-I do not give permission to present any of my projects as your own (this is being actively used as my portfolio site and these are my real projects I've worked on).
+**Cloudflare Pages / cPanel**
 
-## FAQs
+Set frontend `API_URL` to:
 
-<details>
-  <summary>How do I change the color on the <code>DisplacementSphere</code> (blobby rotating thing in the background).</summary>
-  
-  You'll need to edit the fragment shader. [Check out this issue for more details](https://github.com/HamishMW/portfolio/issues/19#issuecomment-870996615).
-</details>
+```bash
+API_URL=https://backend.vynexsoultions.com
+```
 
-<details>
-  <summary>How do I get the contact form to work?</summary>
-  
-  To get the contact form working create an AWS account and set up SES (Simple Email service). Then plug in your details into `.dev.vars.example` and rename it to `.dev.vars`. You'll also need to add these as enviroment variables in the Cloudflare dashboard for it to work in production. Or if you don't mind sending through gmail use [nodemailer](https://nodemailer.com/) instead.
-</details>
+Point the backend `CORS_ORIGIN` at your live domain (`https://vynexsoultions.com`).
+
+
+## License
+
+Private — Vynex Solutions. Built on an open Remix portfolio foundation.

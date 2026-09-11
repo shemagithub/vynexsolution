@@ -9,11 +9,10 @@ import {
   SegmentedControlOption,
 } from '~/components/segmented-control';
 import { Text } from '~/components/text';
-import { baseMeta } from '~/utils/meta';
-import config from '~/config.json';
+import { pageMeta } from '~/utils/meta';
 import { Link as RouterLink, useLoaderData } from '@remix-run/react';
 import { json } from '@remix-run/cloudflare';
-import { loadPortfolioPageData, refreshFromApi } from '~/utils/page-loaders';
+import { loadPortfolioPageData } from '~/utils/page-loaders';
 import { useState } from 'react';
 import styles from './portfolio.module.css';
 
@@ -21,12 +20,7 @@ export async function clientLoader() {
   return loadPortfolioPageData();
 }
 
-export const meta = () => {
-  return baseMeta({
-    title: 'Portfolio',
-    description: `Explore projects by ${config.name} — web apps, mobile applications, and IoT systems.`,
-  });
-};
+export const meta = () => pageMeta('/portfolio');
 
 export const Portfolio = () => {
   const { projects, filterCategories } = useLoaderData();
@@ -45,8 +39,8 @@ export const Portfolio = () => {
           <DecoderText text="Our Portfolio" />
         </Heading>
         <Text size="l" as="p" className={styles.subtitle}>
-          Real client websites built by EMBEDIXe — visit live sites or explore interactive
-          demos.
+          Website development, systems design, mobile apps, and IoT projects — visit live sites or
+          explore interactive demos.
         </Text>
         <SegmentedControl
           className={styles.filter}

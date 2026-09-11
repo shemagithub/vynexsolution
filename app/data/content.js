@@ -1,17 +1,22 @@
 export const serviceCategories = [
   {
     id: 'software',
-    title: 'Software Development',
-    items: ['Web apps', 'Admin dashboards', 'SaaS systems'],
+    title: 'Website & Software Development',
+    items: [
+      'Website development',
+      'Custom web applications',
+      'Systems design & SaaS platforms',
+      'Admin dashboards',
+    ],
   },
   {
     id: 'mobile',
-    title: 'Mobile Development',
+    title: 'Mobile App Development',
     items: ['Android apps', 'iOS apps', 'Cross-platform (Flutter / React Native)'],
   },
   {
     id: 'iot',
-    title: 'IoT & Embedded Systems',
+    title: 'IoT, Embedded & Smart Systems',
     items: [
       'Smart devices',
       'Sensors integration',
@@ -21,30 +26,31 @@ export const serviceCategories = [
   },
   {
     id: 'digital',
-    title: 'Digital Services',
+    title: 'Digital Services & SEO',
     items: ['SEO optimization', 'Social media management', 'UI/UX design', 'Branding'],
   },
 ];
 
 export const homeServices = [
   {
-    title: 'Software Development',
-    description: 'Custom web apps, admin dashboards, and scalable SaaS platforms.',
+    title: 'Website & Web Development',
+    description:
+      'Custom websites, web apps, and systems design for businesses that need a modern digital presence.',
     icon: '01',
   },
   {
-    title: 'Mobile Development',
+    title: 'Mobile App Development',
     description: 'Native and cross-platform apps for Android, iOS, and beyond.',
     icon: '02',
   },
   {
-    title: 'IoT & Embedded',
-    description: 'Smart devices, sensor networks, and ESP32 automation systems.',
+    title: 'IoT & Smart Systems',
+    description: 'Connected devices, sensor networks, automation, and embedded solutions.',
     icon: '03',
   },
   {
-    title: 'Digital Services',
-    description: 'SEO, social media, UI/UX design, and brand identity.',
+    title: 'SEO & Digital Services',
+    description: 'Search visibility, social media, UI/UX design, and brand identity.',
     icon: '04',
   },
 ];
@@ -153,7 +159,7 @@ export const testimonials = [
     role: 'CEO, AgriTech Rwanda',
     rating: 5,
     quote:
-      'EMBEDIXe delivered our IoT monitoring system on time and on budget. Their technical expertise and communication were outstanding.',
+      'Vynex Solutions delivered our IoT monitoring system on time and on budget. Their technical expertise and communication were outstanding.',
   },
   {
     name: 'Sarah M.',
@@ -167,29 +173,29 @@ export const testimonials = [
     role: 'Operations Manager, Kigali Logistics',
     rating: 5,
     quote:
-      'Our admin dashboard transformed how we manage operations. EMBEDIXe understood our needs and delivered beyond expectations.',
+      'Our admin dashboard transformed how we manage operations. Vynex Solutions understood our needs and delivered beyond expectations.',
   },
 ];
 
 export const aboutPage = {
-  headerTitle: 'About EMBEDIXe',
+  headerTitle: 'About Vynex Solutions',
   headerDescription:
     'We exist to help businesses in Rwanda and beyond leverage technology — from web and mobile apps to IoT and smart automation systems.',
   story:
-    'EMBEDIXe was founded with a simple belief: every business deserves access to world-class technology. Based in Kigali, Rwanda, we started as a small team passionate about embedded systems and software development. Today, we deliver complete digital solutions — from responsive websites to IoT-powered smart systems.',
+    'Vynex Solutions was founded with a simple belief: every business deserves access to world-class technology. Based in Kigali, Rwanda, we started as a small team passionate about software and connected systems. Today, we deliver complete digital solutions — from responsive websites to IoT-powered smart systems.',
   mission:
     'Empower businesses with innovative, reliable technology solutions that drive growth and efficiency.',
   vision: "Become East Africa's leading tech agency for web, mobile, and IoT solutions.",
   home: {
-    title: 'About EMBEDIXe',
+    title: 'About Vynex Solutions',
     tagLabel: 'Who we are',
     paragraph1:
-      'EMBEDIXe is a tech agency based in Kigali, Rwanda. We build web applications, mobile apps, IoT systems, and smart automation solutions for businesses that want to innovate and grow. From startups to established companies, we turn ideas into reliable, scalable products.',
+      'Vynex Solutions is a tech agency based in Kigali, Rwanda. We build web applications, mobile apps, IoT systems, and smart automation solutions for businesses that want to innovate and grow. From startups to established companies, we turn ideas into reliable, scalable products.',
     paragraph2:
       'Our team combines software engineering, embedded systems expertise, and digital strategy to deliver end-to-end solutions.',
     image: '',
     imageLarge: '',
-    imageAlt: 'EMBEDIXe team working on a project',
+    imageAlt: 'Vynex Solutions team working on a project',
   },
 };
 
@@ -293,4 +299,27 @@ export const filterCategories = [
   { label: 'Web', value: 'web' },
   { label: 'Mobile', value: 'mobile' },
   { label: 'IoT', value: 'iot' },
+];
+
+export const articles = [
+  {
+    slug: 'building-reliable-iot-systems',
+    title: 'Building reliable IoT systems in Rwanda',
+    abstract:
+      'How we design sensor networks, connectivity, and dashboards that stay online in real-world conditions.',
+    content:
+      'At Vynex Solutions, IoT projects succeed when hardware, connectivity, and software are designed together.\n\nWe start with the physical constraints — power, range, and environment — then map them to ESP32 or Arduino devices, MQTT messaging, and a cloud dashboard your team can trust.\n\nThe result is monitoring and automation that works on site, not only in the lab.',
+    featured: true,
+    created_at: '2026-03-12T10:00:00.000Z',
+  },
+  {
+    slug: 'from-idea-to-launch-web-apps',
+    title: 'From idea to launch: shipping web apps faster',
+    abstract:
+      'A practical delivery approach for startups and growing businesses that need a polished product, not just a prototype.',
+    content:
+      'Speed matters, but so does clarity. Our process moves from discovery to design, then into iterative development with weekly demos.\n\nWe prioritize the flows that drive revenue or operations first — auth, dashboards, payments, or lead capture — and keep the rest modular so you can grow without rewriting everything.\n\nThat is how we ship websites and SaaS products that feel finished on day one.',
+    featured: false,
+    created_at: '2026-02-04T10:00:00.000Z',
+  },
 ];

@@ -1,0 +1,130 @@
+{
+  "defaultKeywords": [
+    "website development",
+    "web development",
+    "systems design",
+    "software development",
+    "mobile app development",
+    "IoT systems",
+    "smart systems",
+    "embedded systems",
+    "UI UX design",
+    "Kigali web developer",
+    "Rwanda software company",
+    "business systems",
+    "custom web applications",
+    "digital transformation"
+  ],
+  "pages": {
+    "/": {
+      "path": "/",
+      "title": "Website Development, Systems Design & IoT",
+      "description": "Vynex Solutions designs and builds websites, custom software, mobile apps, IoT, and smart systems. Systems design and web development for businesses in Kigali, Rwanda and beyond.",
+      "keywords": [
+        "website development",
+        "web development",
+        "systems design",
+        "mobile app development",
+        "IoT systems",
+        "smart systems",
+        "software company Kigali"
+      ],
+      "priority": "1.0",
+      "changefreq": "weekly"
+    },
+    "/services": {
+      "path": "/services",
+      "title": "Web Development, Mobile Apps & IoT Services",
+      "description": "Professional services from Vynex Solutions: website development, systems design, software platforms, mobile apps, IoT & embedded systems, SEO, and UI/UX design.",
+      "keywords": [
+        "web development services",
+        "website development",
+        "systems design",
+        "mobile app development",
+        "IoT development",
+        "SEO services"
+      ],
+      "priority": "0.9",
+      "changefreq": "monthly"
+    },
+    "/portfolio": {
+      "path": "/portfolio",
+      "title": "Portfolio — Web, Mobile & Smart Systems",
+      "description": "See Vynex Solutions portfolio: website development, web applications, mobile products, and IoT / smart systems delivered for clients.",
+      "keywords": [
+        "web development portfolio",
+        "website projects",
+        "mobile app portfolio",
+        "IoT projects",
+        "systems design case studies"
+      ],
+      "priority": "0.8",
+      "changefreq": "weekly"
+    },
+    "/pricing": {
+      "path": "/pricing",
+      "title": "Pricing — Websites, Systems & IoT",
+      "description": "Clear pricing for website development, business systems design, mobile apps, and IoT solutions from Vynex Solutions.",
+      "keywords": [
+        "website development pricing",
+        "web development cost",
+        "business systems pricing",
+        "IoT solution packages"
+      ],
+      "priority": "0.7",
+      "changefreq": "monthly"
+    },
+    "/about": {
+      "path": "/about",
+      "title": "About Us — Systems Design & Engineering",
+      "description": "Learn about Vynex Solutions — our team, values, and approach to website development, systems design, mobile apps, and smart systems in Rwanda.",
+      "keywords": [
+        "systems design company",
+        "web development agency Rwanda",
+        "software engineers Kigali",
+        "about Vynex Solutions"
+      ],
+      "priority": "0.7",
+      "changefreq": "monthly"
+    },
+    "/articles": {
+      "path": "/articles",
+      "title": "Blog — Web Development & Systems Design",
+      "description": "Articles on website development, systems design, software engineering, mobile apps, IoT, and product delivery from Vynex Solutions.",
+      "keywords": [
+        "web development blog",
+        "systems design articles",
+        "IoT insights",
+        "software engineering tips"
+      ],
+      "priority": "0.8",
+      "changefreq": "weekly"
+    },
+    "/contact": {
+      "path": "/contact",
+      "title": "Contact — Start Your Web or Systems Project",
+      "description": "Contact Vynex Solutions for website development, systems design, mobile apps, or IoT projects. Reach us by email or WhatsApp from Kigali, Rwanda.",
+      "keywords": [
+        "contact web developer",
+        "hire systems designer",
+        "website development Rwanda",
+        "IoT consultants Kigali"
+      ],
+      "priority": "0.8",
+      "changefreq": "monthly"
+    },
+    "/quote": {
+      "path": "/quote",
+      "title": "Request a Quote — Web & Systems Projects",
+      "description": "Request a custom quote for website development, systems design, mobile applications, or IoT / smart systems from Vynex Solutions.",
+      "keywords": [
+        "website development quote",
+        "systems design estimate",
+        "custom software quote",
+        "IoT project quote"
+      ],
+      "priority": "0.7",
+      "changefreq": "monthly"
+    }
+  }
+}

@@ -1,4 +1,4 @@
-import { getApiUrl } from '~/utils/api-url';
+import { getApiUrl, PRODUCTION_API_URL } from '~/utils/api-url';
 
 function createApiError(status, message) {
   const error = new Error(message);
@@ -7,7 +7,7 @@ function createApiError(status, message) {
 }
 
 export async function adminFetch(path, { env, token, method = 'GET', body } = {}) {
-  const apiUrl = getApiUrl(env);
+  const apiUrl = getApiUrl(env) || PRODUCTION_API_URL;
   const res = await fetch(`${apiUrl}/api/admin${path}`, {
     method,
     headers: {
@@ -26,7 +26,7 @@ export async function adminFetch(path, { env, token, method = 'GET', body } = {}
 }
 
 export async function adminLogin(email, password, env) {
-  const apiUrl = getApiUrl(env);
+  const apiUrl = getApiUrl(env) || PRODUCTION_API_URL;
 
   let res;
   try {

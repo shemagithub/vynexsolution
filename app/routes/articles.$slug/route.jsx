@@ -15,16 +15,31 @@ export async function clientLoader({ params }) {
 
 clientLoader.hydrate = true;
 
-export function meta({ data }) {
+export function meta({ data, params }) {
+  const slug = params?.slug || data?.slug || '';
   if (!data?.frontmatter) {
-    return baseMeta({ title: 'Article', description: 'Blog article' });
+    return baseMeta({
+      title: 'Article',
+      description: 'Insights on website development, systems design, and smart systems.',
+      pathname: '/articles',
+    });
   }
   const { title, abstract } = data.frontmatter;
   return baseMeta({
     title,
     description: abstract,
     prefix: '',
-    ogImage: `${config.url}/static/og.jpg`,
+    pathname: slug ? `/articles/${slug}` : '/articles',
+    type: 'article',
+    keywords: [
+      'website development',
+      'systems design',
+      'web development',
+      'IoT',
+      'smart systems',
+      title,
+    ],
+    ogImage: `${config.url}/social-image.png`,
   });
 }
 

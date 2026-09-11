@@ -1,7 +1,7 @@
 .home {
   overflow-x: hidden;
 
-  & > :global(section) {
+  & > :global(section:not(#intro)) {
     content-visibility: auto;
     contain-intrinsic-size: auto 720px;
   }

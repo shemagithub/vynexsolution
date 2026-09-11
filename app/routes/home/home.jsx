@@ -1,5 +1,5 @@
 import { Footer } from '~/components/footer';
-import { baseMeta } from '~/utils/meta';
+import { pageMeta } from '~/utils/meta';
 import { Intro } from './intro';
 import { Profile } from './profile';
 import { ProjectSummary } from './project-summary';
@@ -9,8 +9,7 @@ import { CtaSection } from './cta-section';
 import { useEffect, useRef, useState } from 'react';
 import { json } from '@remix-run/cloudflare';
 import { useLoaderData } from '@remix-run/react';
-import { loadHomePageData, refreshFromApi } from '~/utils/page-loaders';
-import config from '~/config.json';
+import { loadHomePageData } from '~/utils/page-loaders';
 import styles from './home.module.css';
 
 export async function clientLoader() {
@@ -19,12 +18,7 @@ export async function clientLoader() {
 
 clientLoader.hydrate = true;
 
-export const meta = () => {
-  return baseMeta({
-    title: 'Web, Mobile, IoT & Smart Systems',
-    description: `${config.name} — a tech agency in Kigali, Rwanda building web apps, mobile applications, IoT systems, and digital solutions.`,
-  });
-};
+export const meta = () => pageMeta('/');
 
 export const links = () => [];
 

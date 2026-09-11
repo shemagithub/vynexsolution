@@ -173,8 +173,9 @@
   border-radius: var(--borderRadius);
   background: color-mix(in srgb, var(--primary) 14%, var(--background));
   color: var(--primary);
+  font-family: var(--displayFontStack);
   font-size: var(--fontSizeBodyM);
-  font-weight: var(--fontWeightBold);
+  font-weight: 400;
   flex-shrink: 0;
 }
 
@@ -182,6 +183,10 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  font-family: var(--displayFontStack);
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   transition: opacity 0.2s ease, width 0.2s ease;
 }
 

@@ -13,6 +13,7 @@ import { createCookieSessionStorage, json } from '@remix-run/cloudflare';
 import { ThemeProvider, themeStyles } from '~/components/theme-provider';
 import GothamBook from '~/assets/fonts/gotham-book.woff2';
 import GothamMedium from '~/assets/fonts/gotham-medium.woff2';
+import BlackOpsOne from '~/assets/fonts/black-ops-one.woff2';
 import { useEffect, useState } from 'react';
 import { Error } from '~/layouts/error';
 import { VisuallyHidden } from '~/components/visually-hidden';
@@ -24,7 +25,7 @@ import { SiteConfigProvider } from '~/components/site-config-provider';
 import { SiteBrandingHead } from '~/components/site-branding-head';
 import config from '~/config.json';
 import { getSiteConfig } from '~/utils/api';
-import { getApiUrl } from '~/utils/api-url';
+import { getApiUrl, PRODUCTION_API_URL } from '~/utils/api-url';
 import { mergeSiteConfig } from '~/utils/site-config';
 import styles from './root.module.css';
 import './reset.module.css';
@@ -55,7 +56,7 @@ export const loader = async ({ request, context }) => {
   const session = await getSession(request.headers.get('Cookie'));
   const theme = session.get('theme') || 'dark';
   const env = context?.cloudflare?.env;
-  const apiUrl = getApiUrl(env);
+  const apiUrl = getApiUrl(env) || PRODUCTION_API_URL;
   const isAdmin = pathname.startsWith('/admin');
   const siteConfig = isAdmin ? mergeSiteConfig(config) : await getSiteConfig(env);
 
@@ -80,6 +81,13 @@ export const links = () => [
   {
     rel: 'preload',
     href: GothamBook,
+    as: 'font',
+    type: 'font/woff2',
+    crossOrigin: '',
+  },
+  {
+    rel: 'preload',
+    href: BlackOpsOne,
     as: 'font',
     type: 'font/woff2',
     crossOrigin: '',
@@ -142,7 +150,7 @@ export default function App() {
       <head suppressHydrationWarning>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="api-base" content={apiUrl} />
+        <meta name="api-base" content={apiUrl || PRODUCTION_API_URL} />
         <Meta />
         <Links />
         {canonicalUrl ? <link rel="canonical" href={canonicalUrl} /> : null}

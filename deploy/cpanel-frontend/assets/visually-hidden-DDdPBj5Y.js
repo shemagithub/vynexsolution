@@ -1,1 +1,0 @@
-import{a as r,j as i}from"./components-Y4Kc-98A.js";import{c as m}from"./heading-DCDhetbK.js";const c="_hidden_1mhmf_2",f={hidden:c},l=r.forwardRef(({className:a,showOnFocus:s,as:d="span",children:e,visible:t,...n},o)=>i.jsx(d,{className:m(f.hidden,a),"data-hidden":!t&&!s,"data-show-on-focus":s,ref:o,...n,children:e}));export{l as V};

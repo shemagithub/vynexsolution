@@ -14,3 +14,6 @@ backend/uploads/*
 public/draco
 storybook-static
 .DS_Store
+
+# Rebuild with npm run build:cpanel / build:backend:cpanel
+deploy/*.zip

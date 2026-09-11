@@ -5,23 +5,17 @@ import { Heading } from '~/components/heading';
 import { List, ListItem } from '~/components/list';
 import { Section } from '~/components/section';
 import { Text } from '~/components/text';
-import { baseMeta } from '~/utils/meta';
-import config from '~/config.json';
+import { pageMeta } from '~/utils/meta';
 import { json } from '@remix-run/cloudflare';
 import { useLoaderData } from '@remix-run/react';
-import { loadPricingPageData, refreshFromApi } from '~/utils/page-loaders';
+import { loadPricingPageData } from '~/utils/page-loaders';
 import styles from './pricing.module.css';
 
 export async function clientLoader() {
   return loadPricingPageData();
 }
 
-export const meta = () => {
-  return baseMeta({
-    title: 'Pricing',
-    description: `Transparent pricing packages from ${config.name} — websites, business systems, and IoT solutions.`,
-  });
-};
+export const meta = () => pageMeta('/pricing');
 
 export const Pricing = () => {
   const { pricingPackages } = useLoaderData();
@@ -32,8 +26,8 @@ export const Pricing = () => {
           <DecoderText text="Pricing & Packages" />
         </Heading>
         <Text size="l" as="p" className={styles.subtitle}>
-          Flexible packages to fit your budget. Every project is unique — contact us for a
-          custom quote.
+          Flexible packages for website development, systems design, business software, and IoT
+          solutions. Every project is unique — contact us for a custom quote.
         </Text>
       </Section>
       <Section className={styles.grid}>

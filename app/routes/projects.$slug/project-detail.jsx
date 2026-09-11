@@ -30,15 +30,29 @@ export async function clientLoader({ params }) {
   return { project: resolveProjectMedia(project, getApiUrl()) };
 }
 
-export const meta = ({ data }) => {
+export const meta = ({ data, params }) => {
   if (!data?.project) {
-    return baseMeta({ title: 'Project not found' });
+    return baseMeta({
+      title: 'Project not found',
+      description: 'This project could not be found.',
+      pathname: '/portfolio',
+      robots: 'noindex, follow',
+    });
   }
 
   return baseMeta({
     title: data.project.title,
     description: data.project.description,
     prefix: 'Projects',
+    pathname: params?.slug ? `/projects/${params.slug}` : '/portfolio',
+    keywords: [
+      'website development',
+      'web development',
+      'systems design',
+      data.project.category,
+      ...(data.project.technologies || []).slice(0, 6),
+      data.project.title,
+    ],
   });
 };
 

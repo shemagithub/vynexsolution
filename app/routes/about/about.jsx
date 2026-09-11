@@ -14,10 +14,10 @@ import {
   ProjectSectionText,
   ProjectTextRow,
 } from '~/layouts/project';
-import { baseMeta } from '~/utils/meta';
+import { pageMeta, baseMeta } from '~/utils/meta';
 import { json } from '@remix-run/cloudflare';
 import { useLoaderData } from '@remix-run/react';
-import { loadAboutPageData, refreshFromApi } from '~/utils/page-loaders';
+import { loadAboutPageData } from '~/utils/page-loaders';
 import styles from './about.module.css';
 
 export async function clientLoader() {
@@ -25,11 +25,24 @@ export async function clientLoader() {
 }
 
 export const meta = ({ data }) => {
-  const title = data?.page?.headerTitle || 'About Us';
-  const description =
-    data?.page?.headerDescription ||
-    'Learn about our mission, team, values, and the technologies we use to build smart systems.';
-  return baseMeta({ title, description });
+  const page = pageMeta('/about');
+  if (!data?.page?.headerTitle && !data?.page?.headerDescription) {
+    return page;
+  }
+
+  return baseMeta({
+    title: data?.page?.headerTitle || 'About Us — Systems Design & Engineering',
+    description:
+      data?.page?.headerDescription ||
+      'Learn about Vynex Solutions — website development, systems design, mobile apps, and smart systems in Rwanda.',
+    pathname: '/about',
+    keywords: [
+      'systems design company',
+      'web development agency Rwanda',
+      'software engineers Kigali',
+      'about Vynex Solutions',
+    ],
+  });
 };
 
 export const About = () => {

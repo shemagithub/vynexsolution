@@ -1,10 +1,11 @@
 ---
-# cPanel Git deployment for the frontend (embedixe.korasmart.com)
+# cPanel Git deployment for the Vynex Solutions frontend
+# Update DEPLOYPATH to your hosting account path before first deploy.
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/koraowzo/embedixe.korasmart.com
+    - export DEPLOYPATH=/home/YOUR_USER/vynexsolutions.com
     - cd $DEPLOYPATH
     - npm install
-    - npm run build
+    - npm run build:cpanel
     - /bin/cp -f deploy/cpanel-frontend.htaccess build/client/.htaccess
     - /bin/cp -r build/client/* ./public_html/ 2>/dev/null || /bin/cp -r build/client/* ./

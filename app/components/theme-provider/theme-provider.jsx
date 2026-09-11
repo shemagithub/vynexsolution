@@ -1,3 +1,4 @@
+import BlackOpsOne from '~/assets/fonts/black-ops-one.woff2';
 import GothamBoldItalic from '~/assets/fonts/gotham-bold-italic.woff2';
 import GothamBold from '~/assets/fonts/gotham-bold.woff2';
 import GothamBookItalic from '~/assets/fonts/gotham-book-italic.woff2';
@@ -168,6 +169,14 @@ const fontStyles = squish(`
     font-family: IPA Gothic;
     font-weight: 400;
     src: url(${IPAGothic}) format('woff2');
+    font-display: swap;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: 'Black Ops One';
+    font-weight: 400;
+    src: url(${BlackOpsOne}) format('woff2');
     font-display: swap;
     font-style: normal;
   }
