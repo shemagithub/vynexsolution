@@ -6,15 +6,14 @@ import {
   getContent,
   getServices,
   getSiteConfig,
+  getStaticContent,
 } from '~/utils/api';
 import { getApiUrl } from '~/utils/api-url';
 import { resolveAboutHomeImages, resolveProjectMedia } from '~/utils/media-url';
 
-export async function loadHomePageData(env) {
+function mapHomePageData(content, env) {
   const apiUrl = getApiUrl(env);
-  const [content, about] = await Promise.all([getContent(env), getAbout(env)]);
-
-  const rawHomeAbout = content.homeAbout || about.page?.home || aboutPage.home;
+  const rawHomeAbout = content.homeAbout || aboutPage.home;
   const publishedProjects = (content.projects || []).filter(
     project => project.published !== false
   );
@@ -31,6 +30,15 @@ export async function loadHomePageData(env) {
     homeAbout: resolveAboutHomeImages(rawHomeAbout, apiUrl),
     _source: content._source === 'api' ? 'api' : 'static',
   };
+}
+
+/** Instant first paint — no network. */
+export function loadHomePageDataStatic(env) {
+  return mapHomePageData(getStaticContent(), env);
+}
+
+export async function loadHomePageData(env) {
+  return mapHomePageData(await getContent(env), env);
 }
 
 export async function loadAboutPageData(env) {

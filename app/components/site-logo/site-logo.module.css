@@ -3,14 +3,14 @@
     display: inline-flex;
     align-items: center;
     position: relative;
-    min-height: 52px;
+    min-height: 48px;
   }
 
   .logo {
     display: block;
-    height: 52px;
+    height: 48px;
     width: auto;
-    max-width: 220px;
+    max-width: 48px;
     object-fit: contain;
     object-position: left center;
   }
@@ -22,18 +22,18 @@
 
     .logo {
       height: 40px;
-      max-width: 180px;
+      max-width: 40px;
     }
   }
 
   @media (--mediaMobile), (--mediaMobileLandscape) {
     .wrapper {
-      min-height: 28px;
+      min-height: 32px;
     }
 
     .logo {
-      height: 28px;
-      max-width: 120px;
+      height: 32px;
+      max-width: 32px;
     }
   }
 
@@ -43,8 +43,8 @@
     }
 
     .logo {
-      height: 24px;
-      max-width: 96px;
+      height: 28px;
+      max-width: 28px;
     }
   }
 }

@@ -22,7 +22,6 @@ import { WhatsAppButton } from '~/components/whatsapp-button/whatsapp-button';
 import { SiteConfigProvider } from '~/components/site-config-provider';
 import { SiteBrandingHead } from '~/components/site-branding-head';
 import config from '~/config.json';
-import { getSiteConfig } from '~/utils/api';
 import { getApiUrl, PRODUCTION_API_URL } from '~/utils/api-url';
 import { mergeSiteConfig } from '~/utils/site-config';
 import styles from './root.module.css';
@@ -37,7 +36,7 @@ export async function clientLoader() {
     typeof localStorage !== 'undefined' ? localStorage.getItem('theme') : null;
   const theme = savedTheme === 'light' || savedTheme === 'dark' ? savedTheme : 'dark';
   const isAdmin = pathname.startsWith('/admin');
-  const siteConfig = isAdmin ? mergeSiteConfig(config) : await getSiteConfig();
+  const siteConfig = mergeSiteConfig(config);
 
   return {
     canonicalUrl,
@@ -84,7 +83,7 @@ export function HydrateFallback() {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="theme-color" content="#111" />
+        <meta name="theme-color" content="#000000" />
         <meta name="color-scheme" content="dark light" />
         <style dangerouslySetInnerHTML={{ __html: themeStyles }} />
       </head>
@@ -102,7 +101,7 @@ export default function App() {
   const [clientTheme, setClientTheme] = useState(null);
 
   const activeTheme = clientTheme || loaderTheme;
-  const themeColor = activeTheme === 'dark' ? '#111' : '#F2F2F2';
+  const themeColor = activeTheme === 'dark' ? '#000000' : '#f7f4ea';
   const colorScheme = activeTheme === 'light' ? 'light dark' : 'dark light';
 
   useEffect(() => {
@@ -111,7 +110,7 @@ export default function App() {
 
   useEffect(() => {
     if (!clientTheme) return;
-    const nextColor = clientTheme === 'dark' ? '#111' : '#F2F2F2';
+    const nextColor = clientTheme === 'dark' ? '#000000' : '#f7f4ea';
     const nextScheme = clientTheme === 'light' ? 'light dark' : 'dark light';
     document.querySelector('meta[name="theme-color"]')?.setAttribute('content', nextColor);
     document.querySelector('meta[name="color-scheme"]')?.setAttribute('content', nextScheme);
@@ -183,7 +182,7 @@ export function ErrorBoundary() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <Meta />
         <Links />
-        <meta name="theme-color" content="#111" />
+        <meta name="theme-color" content="#000000" />
         <meta name="color-scheme" content="dark light" />
         <style dangerouslySetInnerHTML={{ __html: themeStyles }} />
       </head>

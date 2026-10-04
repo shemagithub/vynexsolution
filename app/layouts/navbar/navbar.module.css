@@ -82,7 +82,7 @@
     font-family: var(--displayFontStack);
     font-size: calc((15 / 16) * 1rem);
     font-weight: 400;
-    color: var(--textBody);
+    color: var(--accent);
     letter-spacing: 0.06em;
     line-height: 1;
     text-transform: uppercase;

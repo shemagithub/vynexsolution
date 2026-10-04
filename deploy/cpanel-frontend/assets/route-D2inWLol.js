@@ -1,0 +1,1 @@
+import{r as i}from"./index-C-9ZG0Fd.js";import{c as o}from"./admin-session.client-BB85S7Ym.js";import"./router-DD0KmG-x.js";import"./api-url-Cp0oJFkP.js";async function m(){throw o(),i("/admin/login")}async function a(){throw o(),i("/admin/login")}export{m as clientAction,a as clientLoader};

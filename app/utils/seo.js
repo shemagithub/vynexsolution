@@ -27,7 +27,7 @@ export function organizationJsonLd() {
     '@type': 'Organization',
     name: config.name,
     url: `${siteUrl}/`,
-    logo: `${siteUrl}${config.logoLight || '/logo-light.svg'}`,
+    logo: `${siteUrl}/logo.png`,
     email: config.email,
     telephone: config.phone,
     address: {

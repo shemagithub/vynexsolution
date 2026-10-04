@@ -107,7 +107,7 @@ export default function App() {
   const [clientTheme, setClientTheme] = useState(null);
 
   const activeTheme = clientTheme || loaderTheme;
-  const themeColor = loaderTheme === 'dark' ? '#111' : '#F2F2F2';
+  const themeColor = loaderTheme === 'dark' ? '#000000' : '#f7f4ea';
   const colorScheme = loaderTheme === 'light' ? 'light dark' : 'dark light';
 
   useEffect(() => {
@@ -116,7 +116,7 @@ export default function App() {
 
   useEffect(() => {
     if (!clientTheme) return;
-    const nextColor = clientTheme === 'dark' ? '#111' : '#F2F2F2';
+    const nextColor = clientTheme === 'dark' ? '#000000' : '#f7f4ea';
     const nextScheme = clientTheme === 'light' ? 'light dark' : 'dark light';
     document.querySelector('meta[name="theme-color"]')?.setAttribute('content', nextColor);
     document.querySelector('meta[name="color-scheme"]')?.setAttribute('content', nextScheme);
@@ -218,7 +218,7 @@ export function ErrorBoundary() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <Meta />
         <Links />
-        <meta name="theme-color" content="#111" />
+        <meta name="theme-color" content="#000000" />
         <meta name="color-scheme" content="dark light" />
         <style dangerouslySetInnerHTML={{ __html: themeStyles }} />
       </head>

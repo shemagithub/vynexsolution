@@ -9,7 +9,7 @@ function updateMeta(name, content) {
 
 export function HeadThemeMeta({ theme }) {
   useEffect(() => {
-    const themeColor = theme === 'dark' ? '#111' : '#F2F2F2';
+    const themeColor = theme === 'dark' ? '#000000' : '#f7f4ea';
     const colorScheme = theme === 'light' ? 'light dark' : 'dark light';
     updateMeta('theme-color', themeColor);
     updateMeta('color-scheme', colorScheme);

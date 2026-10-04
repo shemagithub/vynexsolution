@@ -171,12 +171,15 @@
   width: 36px;
   height: 36px;
   border-radius: var(--borderRadius);
-  background: color-mix(in srgb, var(--primary) 14%, var(--background));
-  color: var(--primary);
-  font-family: var(--displayFontStack);
-  font-size: var(--fontSizeBodyM);
-  font-weight: 400;
+  background: #000;
+  overflow: hidden;
   flex-shrink: 0;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 }
 
 .brandText {
@@ -185,6 +188,7 @@
   white-space: nowrap;
   font-family: var(--displayFontStack);
   font-weight: 400;
+  color: var(--accent);
   letter-spacing: 0.06em;
   text-transform: uppercase;
   transition: opacity 0.2s ease, width 0.2s ease;

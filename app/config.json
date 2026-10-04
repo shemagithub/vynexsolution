@@ -11,8 +11,10 @@
   "github": "vynexsolutions",
   "linkedin": "vynex-solutions",
   "instagram": "vynexsolutions",
-  "logoLight": "/logo-light.svg",
-  "logoDark": "/logo-dark.svg",
+  "logoLight": "/logo-mark.png",
+  "logoDark": "/logo-mark.png",
+  "favicon": "/logo-mark.png",
+  "appleTouchIcon": "/logo.png",
   "repo": "https://github.com/vynexsolutions/website",
   "ascii": "\\\\   /\n \\\\ /\n  V\n"
 }

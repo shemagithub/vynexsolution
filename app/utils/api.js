@@ -13,29 +13,45 @@ export class ApiError extends Error {
   }
 }
 
+const FETCH_TIMEOUT_MS = 1800;
+
 export async function apiRequest(path, env, init = {}) {
   const apiUrl = getApiUrl(env);
   const url = `${apiUrl}/api${path}`;
+  const controller = new AbortController();
+  const timeoutMs = Number.isFinite(init.timeoutMs) ? init.timeoutMs : FETCH_TIMEOUT_MS;
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
 
-  const response = await fetch(url, {
-    ...init,
-    headers: {
-      Accept: 'application/json',
-      ...(init.body ? { 'Content-Type': 'application/json' } : {}),
-      ...init.headers,
-    },
-  });
+  try {
+    const { timeoutMs: _timeoutMs, signal, ...rest } = init;
+    const response = await fetch(url, {
+      ...rest,
+      signal: signal || controller.signal,
+      headers: {
+        Accept: 'application/json',
+        ...(rest.body ? { 'Content-Type': 'application/json' } : {}),
+        ...rest.headers,
+      },
+    });
 
-  const data = await response.json().catch(() => ({}));
+    const data = await response.json().catch(() => ({}));
 
-  if (!response.ok) {
-    throw new ApiError(response.status, data.error || `Request failed (${response.status})`);
+    if (!response.ok) {
+      throw new ApiError(response.status, data.error || `Request failed (${response.status})`);
+    }
+
+    return data;
+  } catch (error) {
+    if (error?.name === 'AbortError') {
+      throw new ApiError(408, 'Request timed out');
+    }
+    throw error;
+  } finally {
+    clearTimeout(timer);
   }
-
-  return data;
 }
 
-function staticContentPayload() {
+export function getStaticContent() {
   return {
     projects: staticContent.projects,
     serviceCategories: staticContent.serviceCategories,
@@ -88,7 +104,7 @@ export async function getContent(env) {
     if (typeof console !== 'undefined') {
       console.warn('[api] getContent fallback:', error.message);
     }
-    return staticContentPayload();
+    return getStaticContent();
   }
 }
 
@@ -239,6 +255,7 @@ export async function postToApi(path, body, env) {
   return apiRequest(path, env, {
     method: 'POST',
     body: JSON.stringify(body),
+    timeoutMs: 12000,
   });
 }
 

@@ -1,4 +1,3 @@
-import { DecoderText } from '~/components/decoder-text';
 import { Heading } from '~/components/heading';
 import { Section } from '~/components/section';
 import { useTheme } from '~/components/theme-provider';
@@ -21,6 +20,7 @@ const DisplacementSphere = lazy(() =>
 export function Intro({ id, sectionRef, scrollIndicatorHidden, ...rest }) {
   const { theme } = useTheme();
   const siteConfig = useSiteConfig();
+  const [compact, setCompact] = useState(true);
   const { name, role, disciplines } = siteConfig;
   const [disciplineIndex, setDisciplineIndex] = useState(0);
   const prevTheme = usePrevious(theme);
@@ -33,11 +33,18 @@ export function Intro({ id, sectionRef, scrollIndicatorHidden, ...rest }) {
   const [showSphere, setShowSphere] = useState(false);
 
   useEffect(() => {
-    const media = window.matchMedia(SPHERE_QUERY);
-    const update = () => setShowSphere(media.matches);
-    update();
-    media.addEventListener('change', update);
-    return () => media.removeEventListener('change', update);
+    const compactQuery = window.matchMedia('(max-width: 1040px)');
+    const sphereQuery = window.matchMedia(SPHERE_QUERY);
+    const updateCompact = () => setCompact(compactQuery.matches);
+    const updateSphere = () => setShowSphere(sphereQuery.matches);
+    updateCompact();
+    updateSphere();
+    compactQuery.addEventListener('change', updateCompact);
+    sphereQuery.addEventListener('change', updateSphere);
+    return () => {
+      compactQuery.removeEventListener('change', updateCompact);
+      sphereQuery.removeEventListener('change', updateSphere);
+    };
   }, []);
 
   useInterval(
@@ -45,7 +52,7 @@ export function Intro({ id, sectionRef, scrollIndicatorHidden, ...rest }) {
       const index = (disciplineIndex + 1) % disciplines.length;
       setDisciplineIndex(index);
     },
-    5000,
+    compact ? null : 5000,
     theme
   );
 
@@ -70,7 +77,7 @@ export function Intro({ id, sectionRef, scrollIndicatorHidden, ...rest }) {
       tabIndex={-1}
       {...rest}
     >
-      <Transition in key={theme} timeout={3000}>
+      <Transition in key={theme} timeout={compact ? 400 : 3000}>
         {({ visible, status }) => (
           <>
             {showSphere && (
@@ -80,46 +87,54 @@ export function Intro({ id, sectionRef, scrollIndicatorHidden, ...rest }) {
             )}
             <header className={styles.text}>
               <h1 className={styles.name} data-visible={visible} id={titleId}>
-                <DecoderText text={name} delay={500} />
+                {name}
               </h1>
-              <Heading level={0} as="h2" className={styles.title}>
-                <VisuallyHidden className={styles.label}>
-                  {`${role} + ${introLabel}`}
-                </VisuallyHidden>
-                <span aria-hidden className={styles.row}>
-                  <span
-                    className={styles.word}
-                    data-status={status}
-                    style={cssProps({ delay: tokens.base.durationXS })}
-                  >
-                    {role}
+              {compact ? (
+                <Heading level={3} as="h2" className={styles.title}>
+                  <span className={styles.staticTitle}>
+                    {role} {introLabel}
                   </span>
-                  <span className={styles.line} data-status={status} />
-                </span>
-                <div className={styles.row}>
-                  {disciplines.map(item => (
-                    <Transition
-                      unmount
-                      in={item === currentDiscipline}
-                      timeout={{ enter: 3000, exit: 2000 }}
-                      key={item}
+                </Heading>
+              ) : (
+                <Heading level={0} as="h2" className={styles.title}>
+                  <VisuallyHidden className={styles.label}>
+                    {`${role} + ${introLabel}`}
+                  </VisuallyHidden>
+                  <span aria-hidden className={styles.row}>
+                    <span
+                      className={styles.word}
+                      data-status={status}
+                      style={cssProps({ delay: tokens.base.durationXS })}
                     >
-                      {({ status, nodeRef }) => (
-                        <span
-                          aria-hidden
-                          ref={nodeRef}
-                          className={styles.word}
-                          data-plus={true}
-                          data-status={status}
-                          style={cssProps({ delay: tokens.base.durationL })}
-                        >
-                          {item}
-                        </span>
-                      )}
-                    </Transition>
-                  ))}
-                </div>
-              </Heading>
+                      {role}
+                    </span>
+                    <span className={styles.line} data-status={status} />
+                  </span>
+                  <div className={styles.row}>
+                    {disciplines.map(item => (
+                      <Transition
+                        unmount
+                        in={item === currentDiscipline}
+                        timeout={{ enter: 3000, exit: 2000 }}
+                        key={item}
+                      >
+                        {({ status, nodeRef }) => (
+                          <span
+                            aria-hidden
+                            ref={nodeRef}
+                            className={styles.word}
+                            data-plus={true}
+                            data-status={status}
+                            style={cssProps({ delay: tokens.base.durationL })}
+                          >
+                            {item}
+                          </span>
+                        )}
+                      </Transition>
+                    ))}
+                  </div>
+                </Heading>
+              )}
             </header>
             <RouterLink
               to="/#services"
@@ -137,7 +152,7 @@ export function Intro({ id, sectionRef, scrollIndicatorHidden, ...rest }) {
               data-hidden={scrollIndicatorHidden}
               onClick={handleScrollClick}
             >
-              <VisuallyHidden>Scroll to projects</VisuallyHidden>
+              <VisuallyHidden>Scroll to services</VisuallyHidden>
               <svg
                 aria-hidden
                 stroke="currentColor"

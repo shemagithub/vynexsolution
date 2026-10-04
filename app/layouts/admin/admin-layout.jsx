@@ -83,7 +83,7 @@ export function AdminLayout({ user }) {
         <div className={styles.sidebarHeader}>
           <Link to="/" className={styles.brand} onClick={() => setMenuOpen(false)}>
             <span className={styles.brandMark} aria-hidden="true">
-              V
+              <img src="/logo-mark.png" alt="" />
             </span>
             <span className={styles.brandText}>VYNEX ADMIN</span>
           </Link>

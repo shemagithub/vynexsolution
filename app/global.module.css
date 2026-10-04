@@ -71,7 +71,7 @@
 
   :global(::selection) {
     background: var(--accent);
-    color: var(--black);
+    color: var(--onPrimary);
   }
 
   :global(:focus) {

@@ -2,8 +2,11 @@ import { pxToRem } from '~/utils/style';
 
 // Full list of tokens
 const baseTokens = {
-  black: 'oklch(0% 0 0)',
-  white: 'oklch(100% 0 0)',
+  black: '#000000',
+  white: '#ffffff',
+  gold: '#cfa846',
+  goldBright: '#f0c94a',
+  goldDeep: '#9c6f0a',
   bezierFastoutSlowin: 'cubic-bezier(0.4, 0.0, 0.2, 1)',
   durationXS: '200ms',
   durationS: '300ms',
@@ -109,27 +112,29 @@ const tokensMobileSmall = {
 
 // Tokens that change based on theme
 const dark = {
-  background: 'oklch(17.76% 0 0)',
-  backgroundLight: 'oklch(21.78% 0 0)',
-  primary: 'oklch(84.42% 0.19 202.24)',
-  accent: 'oklch(84.42% 0.19 202.24)',
+  background: '#000000',
+  backgroundLight: '#0c0b08',
+  primary: 'var(--gold)',
+  accent: 'var(--goldBright)',
+  onPrimary: 'var(--black)',
   error: 'oklch(65.91% 0.249 13.76)',
   text: 'var(--white)',
   textTitle: 'var(--text)',
-  textBody: 'color-mix(in lab, var(--text) 80%, transparent)',
-  textLight: 'color-mix(in lab, var(--text) 60%, transparent)',
+  textBody: 'color-mix(in lab, var(--text) 82%, transparent)',
+  textLight: 'color-mix(in lab, var(--text) 62%, transparent)',
 };
 
 const light = {
-  background: 'oklch(96.12% 0 0)',
+  background: '#f7f4ea',
   backgroundLight: 'var(--white)',
-  primary: 'var(--black)',
-  accent: 'oklch(84.42% 0.19 202.24)',
+  primary: 'var(--goldDeep)',
+  accent: 'var(--goldDeep)',
+  onPrimary: 'var(--white)',
   error: 'oklch(63.17% 0.259 25.41)',
   text: 'var(--black)',
-  textTitle: 'color-mix(in lab, var(--text) 90%, transparent)',
-  textBody: 'color-mix(in lab, var(--text) 75%, transparent)',
-  textLight: 'color-mix(in lab, var(--text) 55%, transparent)',
+  textTitle: 'color-mix(in lab, var(--text) 92%, transparent)',
+  textBody: 'color-mix(in lab, var(--text) 76%, transparent)',
+  textLight: 'color-mix(in lab, var(--text) 56%, transparent)',
 };
 
 export const tokens = {

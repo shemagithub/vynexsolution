@@ -16,6 +16,11 @@
       @media (--mediaUseMotion) {
         animation: laptop-float 6s ease-in-out 1.2s infinite;
       }
+
+      @media (--mediaTablet), (--mediaMobile) {
+        animation: none;
+        transform: none;
+      }
     }
   }
 
@@ -35,6 +40,11 @@
     .laptop[data-visible='true'] & {
       @media (--mediaUseMotion) {
         animation: lid-open 1s var(--bezierFastoutSlowin) 0.15s both;
+      }
+
+      @media (--mediaTablet), (--mediaMobile) {
+        animation: none;
+        transform: none;
       }
     }
   }

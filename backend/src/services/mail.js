@@ -482,14 +482,14 @@ const BRAND = {
   get url() {
     return process.env.SITE_URL || 'https://vynexsoultions.com';
   },
-  bg: '#0d0d0f',
-  card: '#161619',
-  cardBorder: '#2a2a30',
-  panel: '#1d1d21',
-  accent: '#25d0c4',
-  accentSoft: 'rgba(37, 208, 196, 0.14)',
-  text: '#f5f5f7',
-  textMuted: '#a1a1aa',
+  bg: '#000000',
+  card: '#0c0b08',
+  cardBorder: '#3d3218',
+  panel: '#14110a',
+  accent: '#cfa846',
+  accentSoft: 'rgba(207, 168, 70, 0.16)',
+  text: '#f7f4ea',
+  textMuted: '#c4b892',
   heading: '#ffffff',
 };
 
@@ -508,7 +508,7 @@ function renderDetailRows(items = []) {
 
 /**
  * Email-client-safe (table-based, inline CSS) layout matching the dark
- * Vynex Solutions web app with its cyan accent.
+ * Vynex Solutions web app with its gold, black, and white palette.
  */
 function renderEmailLayout({ preheader = '', eyebrow, heading, bodyHtml, footerNote }) {
   const siteEmail = getReplyToAddress();

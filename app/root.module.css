@@ -5,8 +5,7 @@
     transition: opacity 0.4s var(--bezierFastoutSlowin);
 
     &[data-loading='true'] {
-      opacity: 0.72;
-      pointer-events: none;
+      opacity: 0.92;
     }
 
     &[data-admin='true'] {
@@ -16,7 +15,7 @@
 
   .skip {
     isolation: isolate;
-    color: var(--background);
+    color: var(--onPrimary);
     z-index: var(--zIndex4);
 
     &:focus {

@@ -4,7 +4,7 @@
     --buttonFontSize: calc((18 / 16) * 1rem);
     --buttonFocusWidth: 4px;
     --buttonPadding: 0 var(--spaceL);
-    --buttonTextColor: var(--background);
+    --buttonTextColor: var(--onPrimary);
     --buttonTextOpacity: 1;
     --buttonLoaderDelay: 0s;
 
@@ -146,7 +146,7 @@
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    color: var(--background);
+    color: var(--onPrimary);
     opacity: 0;
     transition: opacity var(--durationM) ease var(--buttonLoaderDelay);
 

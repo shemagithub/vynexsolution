@@ -234,7 +234,7 @@
       github: 'vynexsolutions',
       linkedin: 'vynex-solutions',
       instagram: 'vynexsolutions',
-      logoLight: '/logo-light.svg',
-      logoDark: '/logo-dark.svg',
+      logoLight: '/logo-mark.png',
+      logoDark: '/logo-mark.png',
     },
   };

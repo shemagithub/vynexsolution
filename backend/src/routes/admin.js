@@ -18,8 +18,8 @@ async function getAboutPageConfig() {
 }
 
 const DEFAULT_LOGOS = {
-  light: '/logo-light.svg',
-  dark: '/logo-dark.svg',
+  light: '/logo-mark.png',
+  dark: '/logo-mark.png',
 };
 
 async function getSiteSettings() {
